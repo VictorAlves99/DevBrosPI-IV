@@ -1,0 +1,128 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<f:facet name="first">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport"
+			content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+	</f:facet>
+	<link rel="shortcut icon" type="image/x-icon"
+		href="https://uploaddeimagens.com.br/imagens/favicon-ico-34aef661-1a6f-49dd-a49c-8f45515d53ae" />
+	<title>Cadastro de Clientes</title>
+	<h:outputScript name="js/layout.js" library="avalon-layout" />
+	<style>
+.textoDirecional {
+	color: red;
+	text-align: center;
+}
+
+.textoDirecional:hover {
+	color: #0000b3;
+}
+</style>
+</h:head>
+
+<h:body styleClass="login-body">
+	<div class="login-image">
+		<a href="Sistema/Dashboard.htm"><p:graphicImage
+				name="images/logo.png" library="avalon-layout" /></a>
+	</div>
+	<div class="card login-panel ui-fluid" style="padding-top: 0px">
+		<div class="login-panel-content">
+			<div class="ui-g">
+				<div class="ui-g-12 ui-sm-6 ui-md-6"
+					style="width: 100%; text-align: center; ">
+					<h2 class="welcome-text">
+						<b>Cadastro de Cliente</b>
+					</h2>
+				</div>
+
+				<h:form>
+					<p:growl id="grow" showDetail="false" />
+
+					<div class="ui-g-12" style="text-align: left; margin-top ">
+						<h:panelGroup>
+							<label class="login-label" style="margin-left: 1px">Nome</label>
+							<div class="login-input">
+								<p:inputText value="#{cadastroClienteBean.objeto.nome}"
+									style="width:325px" />
+							</div>
+							<br />
+							<label class="login-label" style="margin-left: 1px">E-mail</label>
+							<div class="login-input">
+								<p:inputText value="#{cadastroClienteBean.objeto.email}"
+									style="width:325px" />
+							</div>
+							<br />
+							<label class="login-label" style="margin-left: 1px">CPF</label>
+							<div class="login-input">
+								<p:inputMask id="cpf" value="#{cadastroClienteBean.objeto.cpf}"
+									mask="999.999.999-99" style="width:325px" />
+							</div>
+							
+							<br />
+							<label class="login-label" style="margin-left: 1px">Celular</label>
+							<div class="login-input">
+								<p:inputMask id="celular"
+									value="#{cadastroClienteBean.objeto.celular}"
+									mask="(99) 9999-9999?9" style="width:325px" />
+							</div>
+							<br />
+							<label class="login-label" style="margin-left: 1px">Data de nascimento</label>
+							<div class="login-input">
+								<p:calendar value="#{cadastroClienteBean.objeto.dataDeNascimento}"
+									locale="pt" pattern="dd/MM/yyyy" />
+							</div>
+							<br />
+							<label class="login-label" style="margin-left: 1px">Senha</label>
+							<div class="login-input">
+								<p:password id="senha"
+									value="#{cadastroClienteBean.senhaDescriptografada}" style="width:325px" />
+							</div>
+							<br />
+							<label class="login-label" style="margin-left: 1px">Confirmar
+								Senha</label>
+							<div class="login-input">
+								<p:password id="confirmacaoSenha"
+									value="#{cadastroClienteBean.objeto.confirmacaoSenha}"
+									style="width:325px" />
+							</div>
+							<br />
+							<label class="login-label" style="margin-left: 1px">Endereço</label>
+							<div class="login-input">
+								<p:inputText id="endereco"
+									value="#{cadastroClienteBean.endereco}"
+									style="width:325px" />
+							</div>
+							<br />
+						</h:panelGroup>
+					</div>
+					<div class="finishRed">
+						<p:commandButton
+							actionListener="#{cadastroClienteBean.cadastrar()}"
+							value="Confirmar" icon="fa fa-fw fa-user" ajax="false"
+							update=":grow" />
+					</div>
+					<div class="ui-g-12 ui-sm-12 ui-md-12">
+						<a href="Login.htm" class="textoDirecional">Voltar</a>
+					</div>
+				</h:form>
+
+
+			</div>
+		</div>
+	</div>
+
+	<h:outputStylesheet name="login.css" library="css" />
+</h:body>
+
+</html>

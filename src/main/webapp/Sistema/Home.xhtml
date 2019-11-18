@@ -1,0 +1,235 @@
+<ui:composition template="templateHome.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:define name="title">Home</ui:define>
+
+	<ui:define name="content">
+		<style>
+.textoDirecional {
+	color: #0000b3;
+}
+
+.textoDirecional:hover {
+	color: red;
+}
+</style>
+		<script>
+			function handleCompleteAbrirSugestao(xhr, status, args) {
+				if (args.showDialog) {
+					PF('dialogDetalheProduto').show();
+				}
+			}
+
+			function n() {
+
+				var currentPage = PF('documentos').page;
+				var totalPages = PF('documentos').totalPages - 1;
+				var c = (currentPage === (totalPages));
+				if (!c) {
+					PF('documentos').setPage(currentPage + 1);
+				}
+
+			}
+
+			function p() {
+
+				var currentPage = PF('documentos').page;
+				if (currentPage !== 0) {
+					PF('documentos').setPage(currentPage - 1)
+				}
+
+			}
+		</script>
+
+		<h:form id="formPrincipal" style="padding: 0; margin: 0;">
+			<div class="ui-fluid">
+				<div class="ui-g">
+					<div class="ui-g-12" style="padding: 0; margin: 0;">
+						<p:panelGrid columns="2" layout="grid"
+							style="background-color: lightblue;border-bottom: 5px solid #BCBCBC;"
+							styleClass="ui-panelgrid-blank form-group"
+							columnClasses="ui-grid-col-2,ui-grid-col-10">
+
+							<p:graphicImage style="height: 65px; margin-left: 10px"
+								name="images/logo.png" library="avalon-layout" />
+
+							<p:panelGrid columns="4" layout="grid"
+								style="background-color: lightblue;"
+								styleClass="ui-panelgrid-blank form-group"
+								columnClasses="ui-grid-col-8 ,ui-grid-col-1,ui-grid-col-2,ui-grid-col-1">
+
+								<p:outputPanel>
+									<p:inputText value="#{homeBean.textoPesquisa}"
+										placeholder="Procurar por Nome do Produto..."
+										style="background-color: white; height: 50px; width: 100%;border-radius: 30px;margin-top: 2px;" />
+								</p:outputPanel>
+
+								<p:outputPanel>
+									<p:commandButton styleClass="primary-btn"
+										style="width:45px;border-radius: 60px; height:45px;margin-top: 4.5px"
+										icon="fa fa-fw fa-search" update=":formPrincipal:produtos"
+										actionListener="#{homeBean.getListaPorNome}" />
+								</p:outputPanel>
+								<p:outputPanel />
+								<p:menubar
+									style="background-color: transparent; border: 0px; color: black;">
+									<p:submenu label="Conta" icon="topbar-icon fa fa-fw fa-user-o">
+										<p:menuitem actionListener="#{homeBean.abrirCarrinho}"
+											icon="fa fa-fw fa-shopping-cart" value="Carrinho" />
+										<p:menuitem actionListener="#{homeBean.abrirVendas}"
+											icon="fa fa-fw fa-check" value="Vendas" />
+										<p:menuitem actionListener="#{dashboardBean.deslogar}"
+											style="border-top: 1px solid lightgrey"
+											icon="fa fa-fw fa-sign-out" value="Sair" />
+									</p:submenu>
+								</p:menubar>
+							</p:panelGrid>
+						</p:panelGrid>
+						<p:panel style="padding: 0; margin: 0 ">
+							<p:carousel value="#{homeBean.imagens}" id="imagens" var="img"
+								itemStyle="text-align:center" responsive="true"
+								widgetVar="documentos" numVisible="1" autoPlayInterval="5000"
+								circular="true">
+
+								<p:panelGrid columns="3" layout="grid"
+									styleClass="ui-panelgrid-blank form-group"
+									columnClasses="ui-grid-col-1,ui-grid-col-10,ui-grid-col-1">
+
+									<p:commandButton onclick="p()" type="button"
+										icon="fa fa-fw fa-chevron-left"
+										style="width:100%; background-color: transparent; color: blue; margin-top: 180px" />
+
+									<img src="#{img.urlGrande}" alt="Imagem Produto" height="400px"
+										width="800px" />
+
+									<p:commandButton onclick="n()" type="button"
+										icon="fa fa-fw fa-chevron-right"
+										style="width:100%; background-color: transparent; color: blue; margin-top: 180px" />
+
+								</p:panelGrid>
+							</p:carousel>
+
+							<br />
+
+							<p:outputPanel id="produtos"
+								style="width: 100%; border-top: 1px solid lightgray; padding-top: 30px;">
+								<p:dataGrid value="#{homeBean.produtos}" var="p" columns="6"
+									layout="grid" emptyMessage="Nenhum Produto encontrado.">
+
+									<p:panel style="width:100%">
+										<br />
+										<p:panelGrid columns="1" style="width:100%;border:0px"
+											styleClass="produtos">
+											<div align="center">
+												<img src="#{p.imagemPrincipal.urlGrande}"
+													alt="Imagem Produto" height="225px" />
+											</div>
+										</p:panelGrid>
+
+										<div align="center" style="margin-top: 15px; font-size: 18px">
+											<p:outputLabel value="#{p.nome}" style="font-weight: bold" />
+											<br />
+											<p:outputLabel value="Preço: R$ " />
+											<p:outputLabel value="#{p.preco}" converter="moneyConverter" />
+											<br />
+											<p:commandButton icon="fa fa-fw fa-expand"
+												styleClass="success-btn" style="width: 20%; margin-top: 8px"
+												update=":formPrincipal:dialogDetalheProduto"
+												action="#{homeBean.selecionarProduto(p)}"
+												oncomplete="handleCompleteAbrirSugestao(xhr, status, args)" />
+										</div>
+										<br />
+									</p:panel>
+								</p:dataGrid>
+
+							</p:outputPanel>
+						</p:panel>
+						<p:dialog id="dialogDetalheProduto"
+							widgetVar="dialogDetalheProduto"
+							header="#{homeBean.produtoSelecionado.nome}" showEffect="clip"
+							hideEffect="clip" resizable="false" modal="true"
+							responsive="true" height="600" width="600" closeOnEscape="true">
+
+							<div align="center">
+								<img
+									src="#{homeBean.produtoSelecionado.imagemPrincipal.urlGrande}"
+									alt="Imagem Produto" height="250px" />
+							</div>
+
+							<br />
+
+							<p:panelGrid columns="2" layout="grid"
+								styleClass="ui-panelgrid-blank form-group">
+
+								<p:outputPanel style="text-align: right;font-size: 20px;">
+									<p:outputLabel value="Preço (R$): " />
+								</p:outputPanel>
+
+								<p:outputPanel style=" font-size: 20px;">
+									<p:outputLabel converter="moneyConverter"
+										value="#{homeBean.produtoSelecionado.preco}" />
+								</p:outputPanel>
+
+								<p:outputPanel style="text-align: right;font-size: 20px;">
+									<p:outputLabel value="Plataforma: " />
+								</p:outputPanel>
+
+								<p:outputPanel style=" font-size: 20px;">
+									<p:outputLabel
+										value="#{homeBean.produtoSelecionado.plataforma.descricao}" />
+								</p:outputPanel>
+
+							</p:panelGrid>
+
+							<p:separator />
+
+							<p:panelGrid columns="2" layout="grid"
+								styleClass="ui-panelgrid-blank form-group">
+
+								<f:facet name="header">
+									<p:outputLabel value="Valores da Venda"
+										style="font-size: 22px;" />
+								</f:facet>
+
+								<p:outputPanel style="font-size: 20px;">
+									<p:outputLabel value="Quantidade Desejada: " />
+								</p:outputPanel>
+
+								<p:outputPanel style="font-size: 20px;">
+									<p:inputText value="#{homeBean.quantidadeDesejada}"
+										type="number">
+										<p:ajax update="formPrincipal:precoTotal" event="change" />
+									</p:inputText>
+								</p:outputPanel>
+
+								<p:outputPanel style="font-size: 22px;">
+									<p:outputLabel value="Preço Total (R$): " />
+								</p:outputPanel>
+
+								<p:outputPanel style="font-size: 22px;">
+									<p:outputLabel id="precoTotal" value="#{homeBean.precoTotal}"
+										converter="moneyConverter" />
+								</p:outputPanel>
+
+							</p:panelGrid>
+
+							<br />
+							<br />
+
+							<div align="center">
+								<p:commandButton icon="fa fa-fw fa-shopping-cart"
+									value="Adicionar ao Carrinho" styleClass="primary-btn"
+									style="width: 50%;" action="#{homeBean.adicionarAoCarrinho()}"
+									oncomplete="PF('dialogDetalheProduto').hide();" />
+							</div>
+						</p:dialog>
+					</div>
+				</div>
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>

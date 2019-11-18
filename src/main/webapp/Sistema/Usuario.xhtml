@@ -1,0 +1,236 @@
+<ui:composition template="template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:define name="title">Usuário</ui:define>
+
+	<ui:define name="content">
+		<script>
+			function n() {
+
+				var currentPage = PF('imagens').page;
+				var totalPages = PF('imagens').totalPages - 1;
+				var c = (currentPage === (totalPages));
+				if (!c) {
+					PF('imagens').setPage(currentPage + 1);
+				}
+
+			}
+
+			function p() {
+
+				var currentPage = PF('imagens').page;
+				if (currentPage !== 0) {
+					PF('imagens').setPage(currentPage - 1)
+				}
+
+			}
+		</script>
+		<h:form id="formPrincipal">
+			<div class="ui-fluid">
+				<div class="ui-g">
+					<div class="ui-g-12">
+						<p:panel>
+							<f:facet name="header">
+								<i class="fa fa-fw fa-user-o" />
+								<span>Usuário</span>
+							</f:facet>
+							<p:outputPanel id="panelPrincipal">
+								<p:outputPanel rendered="#{usuarioBean.isPesquisa() == true}">
+									<p:panelGrid columns="3" layout="grid"
+										styleClass="ui-panelgrid-blank form-group">
+
+										<p:inputText styleClass="form-control" id="textoPesquisa"
+											value="#{usuarioBean.textoPesquisa}"
+											placeholder="Pesquisar por Nome do Usuário..." />
+
+										<p:outputPanel rendered="#{empresaBean.empresaTipo == 3}">
+											<p:column>
+												<p:commandButton styleClass="primary-btn"
+													style="max-width:130px" icon="ui-icon-search"
+													actionListener="#{usuarioBean.pesquisarADM}"
+													value="Pesquisar" update="tableUsuario" />
+
+												<p:commandButton styleClass="success-btn"
+													icon="fa fa-fw fa-plus" style="max-width:150px"
+													value="Novo Usuário"
+													actionListener="#{usuarioBean.incluir()}"
+													update="formPrincipal:panelPrincipal" />
+
+											</p:column>
+										</p:outputPanel>
+
+										<p:outputPanel rendered="#{empresaBean.empresaTipo != 3}">
+											<p:column>
+												<p:commandButton styleClass="primary-btn"
+													style="max-width:130px" icon="ui-icon-search"
+													actionListener="#{usuarioBean.pesquisar}" value="Pesquisar"
+													update="tableUsuario" />
+
+												<p:commandButton styleClass="success-btn"
+													icon="fa fa-fw fa-plus" style="max-width:150px"
+													value="Novo Usuário"
+													actionListener="#{usuarioBean.incluir()}"
+													update="formPrincipal:panelPrincipal" />
+											</p:column>
+										</p:outputPanel>
+
+									</p:panelGrid>
+
+									<p:dataTable id="tableUsuario" var="u"
+										paginatorPosition="bottom" value="#{usuarioBean.usuarios}"
+										selectionMode="single"
+										emptyMessage="Nenhum usuário encontrado." reflow="true"
+										rowKey="#{u.id}" paginator="true" rows="50">
+
+										<p:column headerText="Id" sortBy="#{u.id}" style="width:150px">
+											<div align="center">
+												<h:outputText value="#{u.id}" />
+											</div>
+										</p:column>
+
+										<p:column headerText="Nome" sortBy="#{u.nome}">
+											<div align="center">
+												<h:outputText value="#{u.nome}" />
+											</div>
+										</p:column>
+
+										<p:column headerText="CPF" sortBy="#{u.cpf}">
+											<div align="center">
+												<h:outputText value="#{u.cpf}" />
+											</div>
+										</p:column>
+
+										<p:column headerText="Abrir" style="width:90px;">
+											<div align="center">
+												<p:commandButton style="max-width:60px;height:18px"
+													icon="fa fa-fw fa-expand"
+													action="#{usuarioBean.setPesquisa(u,false)}"
+													update="formPrincipal:panelPrincipal" />
+											</div>
+										</p:column>
+
+										<p:column headerText="Excluir" style="width:90px;">
+											<div align="center">
+												<p:commandButton style="max-width:60px;height:18px"
+													icon="fa fa-fw fa-trash"
+													action="#{usuarioBean.excluirCadastro(u)}"
+													update=":formMenu:grow,formPrincipal:panelPrincipal">
+
+													<p:confirm header="Excluir Usuário"
+														message="Deseja realmente excluir este Usuário?"
+														icon="ui-icon-alert" />
+												</p:commandButton>
+											</div>
+										</p:column>
+									</p:dataTable>
+								</p:outputPanel>
+								<p:outputPanel rendered="#{usuarioBean.isPesquisa() == false}">
+
+									<p:panelGrid columns="2" layout="grid"
+										styleClass="ui-panelgrid-blank form-group">
+
+										<p:outputLabel value="Id" for="id" />
+
+										<p:outputLabel id="id" value="#{usuarioBean.objeto.id}" />
+
+										<p:outputLabel value="Nome" for="nome" />
+
+										<p:inputText id="nome" value="#{usuarioBean.objeto.nome}" />
+
+										<p:outputLabel value="E-mail" for="email" />
+
+										<p:inputText id="email" value="#{usuarioBean.objeto.email}" />
+
+										<p:outputLabel value="Telefone" for="telefone" />
+
+										<p:inputMask id="telefone"
+											value="#{usuarioBean.objeto.telefone}"
+											mask="(99) 9999-9999?9" />
+
+										<p:outputLabel value="Celular" for="celular" />
+
+										<p:inputMask id="celular"
+											value="#{usuarioBean.objeto.celular}" mask="(99) 9999-9999?9" />
+
+
+										<p:outputLabel value="CPF" for="cpf" />
+
+										<p:inputMask id="cpf" value="#{usuarioBean.objeto.cpf}"
+											mask="999.999.999-99" />
+
+
+										<p:outputLabel value="Data de Nascimento" />
+
+										<p:calendar value="#{usuarioBean.objeto.dataDeNascimento}"
+											locale="pt" pattern="dd/MM/yyyy" />
+
+										<p:outputLabel value="Tipo de Usuario" for="tipoUsuario" />
+
+										<p:selectOneMenu value="#{usuarioBean.objeto.tipoUsuario}"
+											disabled="#{usuarioBean.rejeitaEstoquista()}"
+											id="tipoUsuario">
+											<f:selectItems value="#{usuarioBean.comboTipoUsuario}" />
+										</p:selectOneMenu>
+
+										<p:outputLabel value="Senha" for="senha" />
+
+										<p:password id="senha"
+											value="#{usuarioBean.senhaDescriptografada}" />
+
+										<p:outputLabel value="Confirme a Senha" for="confirmacaoSenha" />
+
+										<p:password id="confirmacaoSenha"
+											value="#{usuarioBean.objeto.confirmacaoSenha}" />
+
+										<p:outputLabel value="Endereços" for="endereco" />
+
+										<p:commandButton styleClass="success-btn"
+											value="Adicionar Endereço"
+											update=":formPrincipal,:formMenu:grow"
+											icon="fa fa-fw fa-map-marker" id="endereco"
+											oncomplete="PF('dialogAdicionarEndereco').show();" />
+
+										<p:commandButton styleClass="btn btn-primary" value="Salvar"
+											actionListener="#{usuarioBean.salvar}"
+											icon="fa fa-fw fa-check"
+											update="formPrincipal:panelPrincipal,:formMenu:grow" />
+
+										<p:commandButton styleClass="danger-btn" value="Voltar"
+											actionListener="#{usuarioBean.setPesquisa(true)}"
+											icon="fa fa-fw fa-arrow-left"
+											update="formPrincipal:panelPrincipal,:formMenu:grow" />
+
+									</p:panelGrid>
+								</p:outputPanel>
+							</p:outputPanel>
+						</p:panel>
+						<p:dialog id="dialogAdicionarEndereco"
+							widgetVar="dialogAdicionarEndereco" showEffect="clip"
+							hideEffect="clip" resizable="false" modal="true"
+							responsive="true" height="120" width="600" closeOnEscape="true">
+
+							<p:outputLabel value="Escreva aqui seu endereço completo:" />
+							<p:inputText value="#{usuarioBean.endereco}" />
+
+							<br />
+							<p:separator />
+							<br />
+
+							<p:commandButton styleClass="success-btn"
+								value="Adicionar Endereço"
+								actionListener="#{usuarioBean.cadastrarEndereco}"
+								icon="fa fa-fw fa-map-marker"
+								oncomplete="PF('dialogAdicionarEndereco').hide();"
+								update="formPrincipal:panelPrincipal,:formMenu:grow" />
+
+						</p:dialog>
+					</div>
+				</div>
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>

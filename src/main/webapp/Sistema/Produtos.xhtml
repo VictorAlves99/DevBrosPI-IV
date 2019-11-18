@@ -1,0 +1,215 @@
+<ui:composition template="template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:define name="title">Produtos</ui:define>
+
+	<ui:define name="content">
+		<h:form id="formPrincipal">
+			<div class="ui-fluid">
+				<div class="ui-g">
+					<div class="ui-g-12">
+						
+						<p:panel>
+							<f:facet name="header">
+								<i class="fa fa-fw fa-list-alt" />
+								<span>Produtos</span>
+							</f:facet>
+							<p:outputPanel id="panelPrincipal">
+
+								<p:outputPanel rendered="#{produtoBean.objeto == null}">
+
+									<p:panelGrid columns="3" layout="grid"
+										styleClass="ui-panelgrid-blank form-group">
+
+										<p:inputText styleClass="form-control" id="textoPesquisa"
+											value="#{produtoBean.textoPesquisa}"
+											placeholder="Procurar por Nome do Produto..." />
+
+										<p:column>
+											<p:commandButton styleClass="primary-btn"
+												style="max-width:130px" icon="fa fa-fw fa-search"
+												actionListener="#{produtoBean.pesquisar}" value="Pesquisar"
+												update="tablePesquisa" />
+
+											<p:commandButton styleClass="success-btn"
+												style="max-width:150px" value="Novo Produto"
+												actionListener="#{produtoBean.incluir}"
+												rendered="#{produtoBean.usuarioAdm}" icon="fa fa-fw fa-plus"
+												update="formPrincipal:panelPrincipal" />
+
+										</p:column>
+
+									</p:panelGrid>
+
+									<p:dataTable id="tablePesquisa" var="p"
+										paginatorPosition="bottom" value="#{produtoBean.produtos}"
+										selectionMode="single" reflow="true" rowKey="#{p.id}"
+										paginator="true" rows="20"
+										emptyMessage="Nenhum produto encontrado.">
+
+										<p:column headerText="Código de Barras" style="width: 200px;"
+											sortBy="#{p.codigoDeBarras}">
+											<div align="center">
+												<h:outputText value="#{p.codigoDeBarras}" />
+											</div>
+										</p:column>
+
+										<p:column headerText="Nome" sortBy="#{p.nome}">
+											<div align="center">
+												<h:outputText value="#{p.nome}" />
+											</div>
+										</p:column>
+
+										<p:column headerText="Preço" sortBy="#{p.preco}">
+											<div align="center">
+												<h:outputText value="#{p.preco}" />
+											</div>
+										</p:column>
+
+										<p:column headerText="Visualizar" style="width:90px;">
+											<div align="center">
+												<p:commandButton style="max-width:60px;height:18px"
+													icon="fa fa-fw fa-search"
+													action="#{produtoBean.carregarEspecificacao(p)}"
+													update="formPrincipal:panelPrincipal" />
+											</div>
+										</p:column>
+
+										<p:column headerText="Abrir" style="width:90px;">
+											<div align="center">
+												<p:commandButton style="max-width:60px;height:18px"
+													icon="fa fa-fw fa-expand"
+													action="#{produtoBean.carregarTela(p)}"
+													update="formPrincipal:panelPrincipal" />
+											</div>
+										</p:column>
+
+										<p:column headerText="Excluir" style="width:90px;">
+											<div align="center">
+												<p:commandButton style="max-width:60px;height:18px"
+													icon="fa fa-fw fa-trash-o"
+													action="#{produtoBean.excluirCadastro(p)}"
+													update="formPrincipal:panelPrincipal">
+													<p:confirm
+														message="Você deseja realmente excluir este produto?"
+														header="Exclusão de Produto" />
+												</p:commandButton>
+											</div>
+										</p:column>
+									</p:dataTable>
+								</p:outputPanel>
+
+								<p:outputPanel rendered="#{produtoBean.objeto != null}">
+									<p:panelGrid columns="2" layout="grid"
+										styleClass="ui-panelgrid-blank form-group">
+
+										<p:outputLabel value="Id" for="id" />
+
+										<p:outputLabel id="id" value="#{produtoBean.objeto.id}" />
+
+										<p:outputLabel value="Nome" for="nome" />
+
+										<p:inputText id="nome" value="#{produtoBean.objeto.nome}" />
+
+										<p:outputLabel value="Descrição" for="descricao" />
+
+										<p:inputTextarea id="descricao"
+											value="#{produtoBean.objeto.descricao}" />
+
+										<p:outputLabel value="Código de Barras" for="codigoDeBarras" />
+
+										<p:inputText id="codigoDeBarras"
+											value="#{produtoBean.objeto.codigoDeBarras}" />
+
+										<p:outputLabel value="Preço" for="preco" />
+
+										<p:inputText id="preco" value="#{produtoBean.objeto.preco}"
+											onkeypress="return(MascaraDeMoeda(this,event))"
+											converter="moneyConverter" maxlength="10" />
+
+										<p:outputLabel value="Quantidade" for="quantidade" />
+
+										<p:inputText id="quantidade" type="number"
+											value="#{produtoBean.objeto.quantidade}" />
+										
+										<p:outputLabel value="Plataforma" for="plataforma" />
+
+										<p:selectOneMenu id="plataforma"
+											value="#{produtoBean.objeto.plataforma}" label="Plataforma"
+											panelStyle="width:250">
+											<f:selectItems
+												value="#{produtoBean.comboTipoPlataformaProduto}" />
+										</p:selectOneMenu>
+
+
+
+									</p:panelGrid>
+
+									<p:separator rendered="#{produtoBean.produtoSalvo}" />
+
+									<p:panelGrid columns="2" layout="grid"
+										rendered="#{produtoBean.produtoSalvo}"
+										styleClass="ui-panelgrid-blank form-group">
+
+
+										<p:fileUpload id="imagem"
+											fileUploadListener="#{produtoBean.subirArquivo}"
+											label="Imagem" fileLimitMessage="Capacidade máxima de 10MB"
+											mode="advanced" update=":formMenu:grow" sizeLimit="10485760"
+											allowTypes="/(\.|\/)(png|PNG|jpg|JPG)$/" />
+
+										<p:carousel value="#{produtoBean.imagens}" id="imagens"
+											var="img" itemStyle="text-align:center" responsive="true"
+											widgetVar="imagens" numVisible="1" autoPlayInterval="0"
+											circular="true">
+
+											<img src="#{img.urlGrande}" height="350" alt="Imagem Produto" />
+
+											<p:panelGrid columns="3" layout="grid"
+												style="border-top: 1px solid #d3d3d3;"
+												styleClass="ui-panelgrid-blank"
+												columnClasses="ui-grid-col-2,ui-grid-col-8,ui-grid-col-2">
+
+												<p:commandButton onclick="p()" type="button"
+													icon="fa fa-fw fa-chevron-left" style="width:100%; " />
+
+												<p:outputPanel />
+
+												<p:commandButton onclick="n()" type="button"
+													icon="fa fa-fw fa-chevron-right" style="width:100%;" />
+
+											</p:panelGrid>
+										</p:carousel>
+
+									</p:panelGrid>
+
+									<p:separator />
+
+									<p:panelGrid columns="2" layout="grid"
+										styleClass="ui-panelgrid-blank form-group">
+
+										<p:commandButton styleClass="btn btn-primary" value="Salvar"
+											actionListener="#{produtoBean.salvarCadastro}"
+											icon="fa fa-fw fa-check"
+											update=":formMenu:grow,formPrincipal:panelPrincipal" />
+
+										<p:commandButton value="Voltar" styleClass="danger-btn"
+											action="#{produtoBean.setObjeto(null)}"
+											icon="fa fa-fw fa-arrow-left"
+											update="formPrincipal:panelPrincipal" />
+
+									</p:panelGrid>
+
+								</p:outputPanel>
+							</p:outputPanel>
+						</p:panel>
+					</div>
+				</div>
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>

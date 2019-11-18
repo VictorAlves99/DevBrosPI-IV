@@ -1,0 +1,169 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pu="http://primefaces.org/avalon">
+
+    <h:form id="menuform">
+        <div class="layout-menu-container #{guestPreferences.menuClass}">
+            <div class="nano">
+                <div class="nano-content menu-scroll-content">
+                    <ui:fragment rendered="#{guestPreferences.profileMode == 'inline' and guestPreferences.menuLayout != 'menu-layout-static menu-layout-horizontal'}">
+                        <div class="profile">
+                            <a id="profile-options" href="#">
+                                <p:graphicImage name="images/avatar.png" library="avalon-layout" styleClass="profile-image" style="border: 0 none"/>
+                                <span class="profile-name">Isabel Oliviera</span>
+                                <i class="fa fa-fw fa-caret-down"></i>
+                                <span class="profile-role">Marketing</span>
+                            </a>
+                        </div>
+
+                        <ul id="profile-menu" class="layout-menu">
+                            <li role="menuitem">
+                                <a href="#">
+                                    <i class="fa fa-fw fa-user"></i>
+                                    <span>Profile</span>
+                                </a>
+                                <div class="layout-menu-tooltip">
+                                    <div class="layout-menu-tooltip-arrow"></div>
+                                    <div class="layout-menu-tooltip-text">Profile</div>
+                                </div>
+                            </li>
+                            <li role="menuitem">
+                                <a href="#">
+                                    <i class="fa fa-fw fa-user-secret"></i>
+                                    <span>Privacy</span>
+                                </a>
+                                <div class="layout-menu-tooltip">
+                                    <div class="layout-menu-tooltip-arrow"></div>
+                                    <div class="layout-menu-tooltip-text">Privacy</div>
+                                </div>
+                            </li>
+                            <li role="menuitem">
+                                <a href="#">
+                                    <i class="fa fa-fw fa-cog"></i>
+                                    <span>Settings</span>
+                                </a>
+                                <div class="layout-menu-tooltip">
+                                    <div class="layout-menu-tooltip-arrow"></div>
+                                    <div class="layout-menu-tooltip-text">Settings</div>
+                                </div>
+                            </li>
+                            <li role="menuitem">
+                                <a href="#">
+                                    <i class="fa fa-fw fa-sign-out"></i>
+                                    <span>Logout</span>
+                                </a>
+                                <div class="layout-menu-tooltip">
+                                    <div class="layout-menu-tooltip-arrow"></div>
+                                    <div class="layout-menu-tooltip-text">Logout</div>
+                                </div>
+                            </li>
+                        </ul>
+                    </ui:fragment>
+
+                    <pu:menu widgetVar="me">
+                        <p:menuitem id="om_dashboard" value="Dashboard" icon="fa fa-fw fa-home" outcome="dashboard"/>
+                        <p:submenu id="am_customization" label="Customization" icon="fa fa-fw fa-bars">
+                            <f:attribute name="badge" value="8" />
+                            <p:menuitem id="custom1" value="Static Menu" icon="fa fa-fw fa-bars" actionListener="#{guestPreferences.setMenuLayout('static')}" ajax="false"/>
+                            <p:menuitem id="custom2" value="Overlay Menu" icon="fa fa-fw fa-bars" actionListener="#{guestPreferences.setMenuLayout('overlay')}" ajax="false"/>
+                            <p:menuitem id="custom3" value="Slim Menu" icon="fa fa-fw fa-bars" actionListener="#{guestPreferences.setMenuLayout('slim')}" ajax="false"/>
+                            <p:menuitem id="custom4" value="Horizontal Menu" icon="fa fa-fw fa-bars" actionListener="#{guestPreferences.setMenuLayout('horizontal')}" ajax="false"/>
+                            <p:menuitem id="custom5" value="Inline Profile" icon="fa fa-fw fa-user" actionListener="#{guestPreferences.setProfileMode('inline')}" ajax="false" />
+                            <p:menuitem id="custom6" value="Top Profile" icon="fa fa-fw fa-user-circle" actionListener="#{guestPreferences.setProfileMode('overlay')}" ajax="false"/>
+                            <p:menuitem id="custom7" value="Light Menu" icon="fa fa-fw fa-square-o" actionListener="#{guestPreferences.setLightMenu}" ajax="false" />
+                            <p:menuitem id="custom8" value="Dark Menu" icon="fa fa-fw fa-square" actionListener="#{guestPreferences.setDarkMenu}" ajax="false"/>
+                        </p:submenu>
+                        <p:submenu id="am_layout" label="Layout Colors" icon="fa fa-fw fa-fire">
+                            <p:submenu id="am_layout_flat" label="Flat" icon="fa fa-fw fa-square-o">
+                                <p:menuitem id="am_layout_flat_1" value="Blue" icon="fa fa-fw fa-paint-brush" actionListener="#{guestPreferences.setLayout('blue', false)}" ajax="false"/>
+                                <p:menuitem id="am_layout_flat_2" value="Cyan" icon="fa fa-fw fa-paint-brush" actionListener="#{guestPreferences.setLayout('cyan', false)}" ajax="false"/>
+                                <p:menuitem id="am_layout_flat_3" value="Indigo" icon="fa fa-fw fa-paint-brush" actionListener="#{guestPreferences.setLayout('indigo', false)}" ajax="false"/>
+                                <p:menuitem id="am_layout_flat_4" value="Purple" icon="fa fa-fw fa-paint-brush" actionListener="#{guestPreferences.setLayout('purple', false)}" ajax="false"/>
+                                <p:menuitem id="am_layout_flat_5" value="Teal" icon="fa fa-fw fa-paint-brush" actionListener="#{guestPreferences.setLayout('teal', false)}" ajax="false"/>
+                                <p:menuitem id="am_layout_flat_6" value="Pink" icon="fa fa-fw fa-paint-brush" actionListener="#{guestPreferences.setLayout('pink', false)}" ajax="false"/>
+                                <p:menuitem id="am_layout_flat_7" value="Lime" icon="fa fa-fw fa-paint-brush" actionListener="#{guestPreferences.setLayout('lime', false)}" ajax="false"/>
+                                <p:menuitem id="am_layout_flat_8" value="Green" icon="fa fa-fw fa-paint-brush" actionListener="#{guestPreferences.setLayout('green', false)}" ajax="false"/>
+                                <p:menuitem id="am_layout_flat_9" value="Amber" icon="fa fa-fw fa-paint-brush" actionListener="#{guestPreferences.setLayout('amber', false)}" ajax="false"/>
+                                <p:menuitem id="am_layout_flat_10" value="Dark Grey" icon="fa fa-fw fa-paint-brush" actionListener="#{guestPreferences.setLayout('darkgrey', false)}" ajax="false"/>
+                            </p:submenu>
+                            <p:submenu id="am_layout_special" label="Special" icon="fa fa-fw fa-square">
+                                <p:menuitem id="am_layout_special_1" value="Influenza" icon="fa fa-fw fa-paint-brush" actionListener="#{guestPreferences.setLayout('influenza', true)}" ajax="false"/>
+                                <p:menuitem id="am_layout_special_2" value="Calm" icon="fa fa-fw fa-paint-brush" actionListener="#{guestPreferences.setLayout('calm', true)}" ajax="false"/>
+                                <p:menuitem id="am_layout_special_3" value="Crimson" icon="fa fa-fw fa-paint-brush" actionListener="#{guestPreferences.setLayout('crimson', true)}" ajax="false"/>
+                                <p:menuitem id="am_layout_special_4" value="Night" icon="fa fa-fw fa-paint-brush" actionListener="#{guestPreferences.setLayout('night', true)}" ajax="false"/>
+                                <p:menuitem id="am_layout_special_5" value="Skyline" icon="fa fa-fw fa-paint-brush" actionListener="#{guestPreferences.setLayout('skyline', true)}" ajax="false"/>
+                                <p:menuitem id="am_layout_special_6" value="Sunkist" icon="fa fa-fw fa-paint-brush" actionListener="#{guestPreferences.setLayout('sunkist', true)}" ajax="false"/>
+                                <p:menuitem id="am_layout_special_7" value="Little Leaf" icon="fa fa-fw fa-paint-brush" actionListener="#{guestPreferences.setLayout('littleleaf', true)}" ajax="false"/>
+                                <p:menuitem id="am_layout_special_8" value="Joomla" icon="fa fa-fw fa-paint-brush" actionListener="#{guestPreferences.setLayout('joomla', true)}" ajax="false"/>
+                                <p:menuitem id="am_layout_special_9" value="Firewatch" icon="fa fa-fw fa-paint-brush" actionListener="#{guestPreferences.setLayout('firewatch', true)}" ajax="false"/>
+                                <p:menuitem id="am_layout_special_10" value="Suzy" icon="fa fa-fw fa-paint-brush" actionListener="#{guestPreferences.setLayout('suzy', true)}" ajax="false"/>
+                            </p:submenu>
+                        </p:submenu>
+                        <p:submenu id="am_theme" label="Themes" icon="fa fa-fw fa-paint-brush">
+                            <f:attribute name="badge" value="5" />
+                            <p:menuitem id="theme1" value="Blue" icon="fa fa-fw fa-paint-brush" actionListener="#{guestPreferences.setTheme('blue')}" ajax="false"/>
+                            <p:menuitem id="theme2" value="Cyan" icon="fa fa-fw fa-paint-brush" actionListener="#{guestPreferences.setTheme('cyan')}" ajax="false"/>
+                            <p:menuitem id="theme3" value="Indigo" icon="fa fa-fw fa-paint-brush" actionListener="#{guestPreferences.setTheme('indigo')}" ajax="false"/>
+                            <p:menuitem id="theme4" value="Purple" icon="fa fa-fw fa-paint-brush" actionListener="#{guestPreferences.setTheme('purple')}" ajax="false"/>
+                            <p:menuitem id="theme5" value="Teal" icon="fa fa-fw fa-paint-brush" actionListener="#{guestPreferences.setTheme('teal')}" ajax="false"/>
+                            <p:menuitem id="theme6" value="Orange" icon="fa fa-fw fa-paint-brush" actionListener="#{guestPreferences.setTheme('orange')}" ajax="false"/>
+                            <p:menuitem id="theme7" value="Deep Purple" icon="fa fa-fw fa-paint-brush" actionListener="#{guestPreferences.setTheme('deeppurple')}" ajax="false"/>
+                            <p:menuitem id="theme8" value="Light Blue" icon="fa fa-fw fa-paint-brush" actionListener="#{guestPreferences.setTheme('lightblue')}" ajax="false"/>
+                            <p:menuitem id="theme9" value="Green" icon="fa fa-fw fa-paint-brush" actionListener="#{guestPreferences.setTheme('green')}" ajax="false"/>
+                            <p:menuitem id="theme10" value="Light Green" icon="fa fa-fw fa-paint-brush" actionListener="#{guestPreferences.setTheme('lightgreen')}" ajax="false"/>
+                            <p:menuitem id="theme11" value="Amber" icon="fa fa-fw fa-paint-brush" actionListener="#{guestPreferences.setTheme('amber')}" ajax="false"/>
+                            <p:menuitem id="theme12" value="Brown" icon="fa fa-fw fa-paint-brush" actionListener="#{guestPreferences.setTheme('brown')}" ajax="false"/>
+                            <p:menuitem id="theme13" value="Dark Grey" icon="fa fa-fw fa-paint-brush" actionListener="#{guestPreferences.setTheme('darkgrey')}" ajax="false"/>
+                        </p:submenu>
+                        <p:submenu id="om_components" label="Components" icon="fa fa-fw fa-sitemap">
+                            <p:menuitem id="om_sample" value="Sample Page" icon="fa fa-fw fa-columns" outcome="sample" />
+                            <p:menuitem id="om_forms" value="Forms" icon="fa fa-fw fa-code" outcome="forms" />
+                            <p:menuitem id="om_data" value="Data" icon="fa fa-fw fa-table" outcome="data" />
+                            <p:menuitem id="om_panels" value="Panels" icon="fa fa-fw fa-list-alt" outcome="panel" />
+                            <p:menuitem id="om_overlays" value="Overlays" icon="fa fa-fw fa-square" outcome="overlay" />
+                            <p:menuitem id="om_menus" value="Menus" icon="fa fa-fw fa-minus-square-o" outcome="menu" />
+                            <p:menuitem id="om_messages" value="Messages" icon="fa fa-fw fa-circle-o-notch" outcome="messages" />
+                            <p:menuitem id="om_charts" value="Charts" icon="fa fa-fw fa-area-chart" outcome="charts" />
+                            <p:menuitem id="om_file" value="File" icon="fa fa-fw fa-arrow-circle-o-up" outcome="file" />
+                            <p:menuitem id="om_misc" value="Misc" icon="fa fa-fw fa-user-secret" outcome="misc" />
+                        </p:submenu>
+                        <p:submenu id="om_default" label="Template Pages" icon="fa fa-fw fa-life-saver">
+                            <p:menuitem id="om_empty" value="Empty Page" icon="fa fa-fw fa-square-o" outcome="empty" target="_blank" />
+                            <p:menuitem id="om_db_landing" value="Landing" icon="fa fa-fw fa-certificate" outcome="landing" target="_blank"/>
+                            <p:menuitem id="om_login" value="Login Page" icon="fa fa-fw fa-sign-in" outcome="login" target="_blank"/>
+                            <p:menuitem id="om_error" value="Error Page" icon="fa fa-fw fa-exclamation-circle" outcome="error" target="_blank"/>
+                            <p:menuitem id="om_404" value="404 Page" icon="fa fa-fw fa-times" outcome="404" target="_blank"/>
+                            <p:menuitem id="om_access" value="Access Denied" icon="fa fa-fw fa-exclamation-triangle" outcome="access" target="_blank"/>
+                        </p:submenu>
+                        <p:submenu id="om_hierarchy" label="Menu Hierarchy" icon="fa fa-fw fa-gg">
+                            <p:submenu id="om_sm1" label="Submenu 1" icon="fa fa-fw fa-sign-in">
+                                <p:submenu id="om_sm11" label="Submenu 1.1" icon="fa fa-fw fa-sign-in">
+                                    <p:menuitem id="om_lnk111" value="Link 1.1.1" icon="fa fa-fw fa-sign-in" url="#" />
+                                    <p:menuitem id="om_lnk112" value="Link 1.1.2" icon="fa fa-fw fa-sign-in" url="#" />
+                                    <p:menuitem id="om_lnk113" value="Link 1.1.3" icon="fa fa-fw fa-sign-in" url="#" />
+                                </p:submenu>
+                                <p:submenu id="om_sm12" label="Submenu 1.2" icon="fa fa-fw fa-sign-in">
+                                    <p:menuitem id="om_lnk121" value="Link 1.2.1" icon="fa fa-fw fa-sign-in" url="#" />
+                                </p:submenu>
+                            </p:submenu>
+                            <p:submenu id="om_sm2" label="Submenu 2" icon="fa fa-fw fa-sign-in">
+                                <p:submenu id="om_sm21" label="Submenu 2.1" icon="fa fa-fw fa-sign-in">
+                                    <p:menuitem id="om_lnk211" value="Link 2.1.1" icon="fa fa-fw fa-sign-in" url="#" />
+                                    <p:menuitem id="om_lnk212" value="Link 2.1.2" icon="fa fa-fw fa-sign-in" url="#" />
+                                </p:submenu>
+                                <p:submenu id="om_sm22" label="Submenu 2.2" icon="fa fa-fw fa-sign-in">
+                                    <p:menuitem id="om_lnk221" value="Link 2.2.1" icon="fa fa-fw fa-sign-in" url="#" />
+                                </p:submenu>
+                            </p:submenu>
+                        </p:submenu>
+                        <p:menuitem id="om_doc" value="Documentation" icon="fa fa-fw fa-book" outcome="docs"/>
+                    </pu:menu>
+                </div>
+            </div>
+        </div>
+    </h:form>
+</ui:composition>

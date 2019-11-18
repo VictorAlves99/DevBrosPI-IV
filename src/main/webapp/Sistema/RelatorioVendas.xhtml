@@ -1,0 +1,234 @@
+<ui:composition template="templateHome.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:define name="title">Relatório</ui:define>
+
+	<ui:define name="content">
+		<script>
+			function handleCompleteAbrirSugestao(xhr, status, args) {
+				if (args.showDialog) {
+					PF('dialogDetalheVenda').show();
+				}
+			}
+		</script>
+		<h:form id="formPrincipal" style="padding: 0; margin: 0;">
+			<div class="ui-fluid">
+				<div class="ui-g">
+					<div class="ui-g-12" style="padding: 0; margin: 0;">
+						<p:panel style="height: 939px; border: 0px">
+							<p:panelGrid columns="2" layout="grid"
+								style="background-color: lightblue;border-bottom: 5px solid #BCBCBC;"
+								styleClass="ui-panelgrid-blank form-group"
+								columnClasses="ui-grid-col-2,ui-grid-col-10">
+
+								<p:outputPanel>
+									<a href="Home.htm"><p:graphicImage
+											style="height: 65px; margin-left: 10px"
+											name="images/logo.png" library="avalon-layout" /></a>
+								</p:outputPanel>
+
+								<p:panelGrid columns="2" layout="grid"
+									style="background-color: lightblue;"
+									styleClass="ui-panelgrid-blank form-group"
+									columnClasses="ui-grid-col-11,ui-grid-col-1">
+
+									<p:outputPanel />
+									<p:menubar
+										style="background-color: transparent; border: 0px; color: black;">
+										<p:submenu label="Conta" icon="topbar-icon fa fa-fw fa-user-o">
+											<p:menuitem actionListener="#{homeBean.abrirCarrinho}"
+												icon="fa fa-fw fa-shopping-cart" value="Carrinho" />
+											<p:menuitem actionListener="#{homeBean.abrirVendas}"
+												icon="fa fa-fw fa-check" value="Vendas" />
+											<p:menuitem actionListener="#{dashboardBean.deslogar}"
+												style="border-top: 1px solid lightgrey"
+												icon="fa fa-fw fa-sign-out" value="Sair" />
+										</p:submenu>
+									</p:menubar>
+								</p:panelGrid>
+							</p:panelGrid>
+
+							<br />
+							<div style="width: 100%" align="center">
+								<p:outputLabel value="Pesquisa de Relatório de Vendas"
+									style="font-size: 26px; color: black" />
+							</div>
+
+							<br />
+							<br />
+							<p:panelGrid columns="7" layout="grid"
+								styleClass="ui-panelgrid-blank form-group"
+								columnClasses="ui-grid-col-2,ui-grid-col-2,ui-grid-col-1,ui-grid-col-2,ui-grid-col-1,ui-grid-col-1,ui-grid-col-3">
+
+								<p:outputPanel>
+									<div align="right" style="margin-top: 4px; font-size: 18px">
+										<p:outputLabel value="Data Inicial: " />
+									</div>
+								</p:outputPanel>
+								<p:outputPanel>
+									<p:calendar value="#{vendaBean.dataInicio}" locale="pt"
+										pattern="dd/MM/yyyy HH:mm" />
+								</p:outputPanel>
+								<p:outputPanel>
+									<div align="right" style="margin-top: 2px; font-size: 18px">
+										<p:outputLabel value="Data Final: " />
+									</div>
+								</p:outputPanel>
+								<p:outputPanel>
+									<p:calendar value="#{vendaBean.dataFim}" locale="pt"
+										pattern="dd/MM/yyyy HH:mm" />
+								</p:outputPanel>
+								<p:outputPanel />
+								<p:outputPanel>
+									<p:commandButton styleClass="primary-btn"
+										icon="fa fa-fw fa-search" update=":formPrincipal:tableVendas, :formMenu:grow"
+										actionListener="#{vendaBean.pesquisarVendas}" />
+								</p:outputPanel>
+								<p:outputPanel />
+
+							</p:panelGrid>
+
+							<br />
+
+							<div align="center">
+								<p:dataTable id="tableVendas" var="v" paginatorPosition="bottom"
+									value="#{vendaBean.vendas}" selectionMode="single"
+									style="width:90%; border-radius: 20px" reflow="true"
+									rowKey="#{v.id}" paginator="true" rows="20"
+									emptyMessage="Nenhum produto encontrado.">
+
+									<p:column headerText="Id" style="width: 200px;"
+										sortBy="#{v.id}">
+										<div align="center">
+											<p:outputLabel value="#{v.id}" />
+										</div>
+									</p:column>
+
+									<p:column headerText="Número da Venda"
+										sortBy="#{v.numeroDaVenda}">
+										<div align="center">
+											<p:outputLabel value="#{v.numeroDaVenda}" />
+										</div>
+									</p:column>
+
+									<p:column headerText="Preço da Venda" sortBy="#{v.precoTotal}">
+										<div align="center">
+											<p:outputLabel value="#{v.precoTotal}"
+												converter="moneyConverter" />
+										</div>
+									</p:column>
+
+									<p:column headerText="Abrir" style="width:90px;">
+										<div align="center">
+											<p:commandButton style="max-width:60px;height:18px"
+												icon="fa fa-fw fa-expand"
+												action="#{vendaBean.abrirVenda(v)}"
+												oncomplete="handleCompleteAbrirSugestao(xhr, status, args)"
+												update=":formPrincipal" />
+										</div>
+									</p:column>
+								</p:dataTable>
+							</div>
+						</p:panel>
+
+					</div>
+				</div>
+			</div>
+			<p:dialog id="dialogDetalheVenda" widgetVar="dialogDetalheVenda"
+				header="Venda nº: #{vendaBean.objeto.numeroDaVenda}"
+				showEffect="clip" hideEffect="clip" width="900" resizable="false"
+				modal="true" responsive="true" closeOnEscape="true">
+
+				<p:outputLabel value="Data da Venda: "
+					style="font-size: 17px; margin-left: 2px; font-weight: bold" />
+
+				<p:outputLabel
+					style="font-size: 17px; margin-left: 2px; font-weight: bold"
+					value="#{vendaBean.objeto.dataVenda}" converter="dataConverter" />
+				<br />
+				<p:outputLabel />
+				<br />
+				<p:outputLabel />
+
+				<p:dataTable id="tableProdutosVendidos" var="i"
+					value="#{vendaBean.objeto.itens}" selectionMode="single"
+					reflow="true" rowKey="#{i.id}" rows="20"
+					emptyMessage="Nenhum produto encontrado.">
+
+					<p:column headerText="Id" style="width: 10%;" sortBy="#{v.id}">
+						<div align="center">
+							<h:outputText value="#{i.id}" />
+						</div>
+					</p:column>
+
+					<p:column headerText="Nome do Jogo" style="width: 35%;"
+						sortBy="#{i.nome}">
+						<div align="center">
+							<h:outputText value="#{i.produto.nome}" />
+						</div>
+					</p:column>
+
+					<p:column headerText="Quantidade" style="width: 15%;"
+						sortBy="#{i.quantidade}">
+						<div align="center">
+							<h:outputText value="#{i.quantidade}" />
+						</div>
+					</p:column>
+
+					<p:column headerText="Preço Unitário" style="width: 20%;"
+						sortBy="#{i.produto.preco}">
+						<div align="center">
+							<h:outputText value="#{i.produto.preco}" />
+						</div>
+					</p:column>
+
+					<p:column headerText="Subtotal" style="width: 20%;"
+						sortBy="#{i.precoItemTotal}">
+						<div align="center">
+							<h:outputText value="#{i.precoItemTotal}" />
+						</div>
+					</p:column>
+
+				</p:dataTable>
+
+				<br />
+				<p:outputLabel />
+				<br />
+				<p:outputLabel />
+				<br />
+				<p:outputLabel />
+
+				<p:panelGrid columns="3" layout="grid"
+					styleClass="ui-panelgrid-blank form-group"
+					columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4">
+
+					<p:outputPanel
+						style="font-size: 17px; font-weight: bold; color: black; border: 1px solid grey; border-radius: 10px; padding: 10px; display: flex; justify-content: center">
+						<p:outputLabel
+							value="Forma de Pagamento: #{vendaBean.objeto.formaPagamento.descricao}" />
+					</p:outputPanel>
+					<p:outputPanel
+						rendered="#{vendaBean.objeto.parcelas.descricao != vendaBean.AVista.descricao}"
+						style="font-size: 17px; font-weight: bold; color: black; border: 1px solid grey; border-radius: 10px; padding: 10px; display: flex; justify-content: center">
+						<p:outputLabel
+							value="Parcelas: #{vendaBean.objeto.parcelas.descricao}" />
+					</p:outputPanel>
+					<p:outputPanel
+						rendered="#{vendaBean.objeto.parcelas.descricao == vendaBean.AVista.descricao}">
+					</p:outputPanel>
+					<p:outputPanel
+						style="font-size: 17px; font-weight: bold; color: red; border: 1px solid grey; border-radius: 10px; padding: 10px; display: flex; justify-content: center">
+						<p:outputLabel value="Preço Total : R$ " />
+						<p:outputLabel id="precoTotal"
+							value="#{vendaBean.objeto.precoTotal}" converter="moneyConverter" />
+					</p:outputPanel>
+				</p:panelGrid>
+
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

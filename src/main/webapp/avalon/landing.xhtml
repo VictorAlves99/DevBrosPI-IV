@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <f:facet name="first">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+        </f:facet>
+        <title>PrimeFaces Avalon</title>
+    </h:head>
+
+    <h:body styleClass="landing-body">
+        <div class="landing-wrapper">
+            <div id="header">
+                <div class="header-top">
+                    <p:graphicImage name="images/landing/logo-landing.svg" library="avalon-layout" styleClass="logo"/>
+                    
+                    <ul class="landing-menu">
+                        <li>
+                            <a href="#home">Home</a>
+                        </li>
+                        <li>
+                            <a href="#features">Features</a>
+                        </li>
+                        <li>
+                            <a href="#statistics">Events</a>
+                        </li>
+                        <li>
+                            <a href="#pricing">Pricing</a>
+                        </li>
+                        <li>
+                            <a href="#video">Video</a>
+                        </li>
+                    </ul>
+                    
+                    <div class="sign-up-buttonpane">
+                        <button>Login</button>
+                        <button>Register</button>
+                    </div>
+                </div>
+                
+                <div class="header-content">
+                    <h1>PrimeFaces Presents avalon</h1>
+                    <h2 style="line-height: 1.5">Minimal and elegant responsive application template with
+                    a premium look for PrimeFaces components.</h2>
+                    <div>
+                        <p:button outcome="dashboard" value="Learn More"/>
+                    </div>
+                </div>
+            </div>
+                        
+            <div id="features">
+                <div>
+                    <div class="ui-g features-content">
+                        <div class="ui-g-12 ui-md-6 ui-lg-3">
+                            <div class="feature-header">
+                                <p:graphicImage name="images/landing/icon-responsivelayout.svg" library="avalon-layout" />
+                            </div>
+                            <h3>Responsive Layout</h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt dolore magna aliqua.</p>
+                        </div>
+                        <div class="ui-g-12 ui-md-6 ui-lg-3">
+                            <div class="feature-header">
+                                <p:graphicImage name="images/landing/icon-moderndesign.svg" library="avalon-layout" />
+                            </div>
+                            <h3>Modern Design</h3>
+                            <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                        </div>
+                        <div class="ui-g-12 ui-md-6 ui-lg-3">
+                            <div class="feature-header">
+                                <p:graphicImage name="images/landing/icon-welldocumented.svg" library="avalon-layout" />
+                            </div>
+                            <h3>Well Documented</h3>
+                            <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                        </div>
+                        <div class="ui-g-12 ui-md-6 ui-lg-3">
+                            <div class="feature-header">
+                                <p:graphicImage name="images/landing/icon-cleancode.svg" library="avalon-layout" />
+                            </div>
+                            <h3>Clean Code</h3>
+                            <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="showcase-content-wrapper">
+                <div class="showcase-content">
+                    <p:graphicImage name="images/landing/icon-introducing.svg" styleClass="intro-logo" library="avalon-layout" />
+                    <h2>Introducing PrimeFaces Avalon</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur velit neque, aliquam sed dolor eu, sagittis rutrum erat. Donec eu risus vitae tellus rhoncus iaculis.</p>
+                </div>
+                <p:graphicImage name="images/landing/image-discover.png" styleClass="layout-image" library="avalon-layout" />
+            </div>
+            
+            <div id="stats">
+                <div>
+                    <div class="ui-g">
+                        <div class="ui-g-12 ui-lg-4 stat-card">
+                            <div class="component-content components">
+                                <p:graphicImage name="images/landing/icon-ui.svg" library="avalon-layout" />
+                                <p>UI Components</p>
+                                <p>100+</p>
+                            </div>
+                        </div>
+                        <div class="ui-g-12 ui-lg-4 stat-card">
+                            <div class="component-content development">
+                                <p:graphicImage name="images/landing/icon-hours.svg" library="avalon-layout" />
+                                <p>Hours of Development</p>
+                                <p>425</p>
+                            </div>
+                        </div>
+                        <div class="ui-g-12 ui-lg-4 stat-card">
+                            <div class="component-content consumed">
+                                <p:graphicImage name="images/landing/icon-coffee.svg" library="avalon-layout" />
+                                <p>Cups of Coffee Consumed</p>
+                                <p>129</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="pricing">
+                <div>
+                    <div class="ui-g">
+                        <div class="ui-g-12 ui-lg-4">
+                            <div class="price-type">
+                                <div class="price-header">
+                                    <h3>Beginner</h3>
+                                    <span class="price-for">For starters and side projects</span>
+                                    <p>$10 / per year</p>
+                                </div>
+                                <div class="price-content">
+                                    <ul>
+                                        <li><i class="fa fa-circle" aria-hidden="true"></i><span>Responsive</span></li>
+                                        <li><i class="fa fa-circle" aria-hidden="true"></i><span>Push Messages</span></li>
+                                    </ul>
+                                </div>
+                                <div class="price-footer">
+                                    <p:button outcome="/dashboard" value="Get Started" styleClass="blue-btn raised-btn" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-12 ui-lg-4">
+                            <div class="price-type">
+                                <div class="price-header">
+                                    <h3>For best professionals</h3>
+                                    <span class="price-for">For starters and side projects</span>
+                                    <p>$25 / per year</p>
+                                </div>
+                                <div class="price-content">
+                                    <ul>
+                                        <li><i class="fa fa-circle" aria-hidden="true"></i><span>Responsive</span></li>
+                                        <li><i class="fa fa-circle" aria-hidden="true"></i><span>Push Messages</span></li>
+                                        <li><i class="fa fa-circle" aria-hidden="true"></i><span>7/24 Support</span></li>
+                                    </ul>
+                                </div>
+                                <div class="price-footer">
+                                    <p:button outcome="/dashboard" value="Get Started" styleClass="blue-btn raised-btn" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-12 ui-lg-4">
+                            <div class="price-type">
+                                <div class="price-header">
+                                    <h3>For serious companies</h3>
+                                    <span class="price-for">For starters and side projects</span>
+                                    <p>Get a quote</p>
+                                </div>
+                                <div class="price-content">
+                                    <ul>
+                                        <li><i class="fa fa-circle" aria-hidden="true"></i><span>Responsive</span></li>
+                                        <li><i class="fa fa-circle" aria-hidden="true"></i><span>Push Messages</span></li>
+                                        <li><i class="fa fa-circle" aria-hidden="true"></i><span>7/24 High Priority Support</span></li>
+                                        <li><i class="fa fa-circle" aria-hidden="true"></i><span>Free Shipping</span></li>
+                                    </ul>
+                                </div>
+                                <div class="price-footer">
+                                    <p:button outcome="/dashboard" value="Get a Quote" styleClass="blue-btn raised-btn" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="video">
+               <div class="ui-g">
+                   <div class="ui-g-12 ui-md-6 video-container">
+                       <iframe width="560" height="315" src="https://www.youtube.com/embed/eKQUP2el3zU" frameborder="0" allowfullscreen="true"></iframe>
+                   </div>
+                   <div class="ui-g-12 ui-md-6 video-content">
+                       <p:graphicImage name="images/landing/icon-video.svg" styleClass="intro-logo" library="avalon-layout" />
+                       <h2>Introducing PrimeFaces Avalon</h2>
+                       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur velit neque, aliquam sed dolor eu, sagittis rutrum erat.</p>
+                       <p:button outcome="/dashboard" value="Learn More" styleClass="blue-btn raised-btn" />
+                   </div>
+               </div>
+           </div>
+            
+           <div id="footer">
+               <div class="ui-g">
+                   <div class="ui-g-12 ui-md-4">
+                       <p:graphicImage name="images/landing/avalon.png" library="avalon-layout" />
+                       <div>
+                           <span>Modern and elegant responsive application template with a premium look for PrimeFaces components.</span>
+                       </div> 
+                   </div>
+                   <div class="ui-g-12 ui-md-4">
+                       <ul class="landing-menu">
+                           <div class="ui-g">
+                               <div class="ui-g-12 ui-md-6" style="text-align:center">
+                                   <li>
+                                       <a href="#home">Home</a>
+                                   </li>
+                                   <li>
+                                       <a href="#features">Features</a>
+                                   </li>
+                                   <li>
+                                       <a href="#statistics">Events</a>
+                                   </li>
+                               </div>
+                               <div class="ui-g-12 ui-md-6" style="text-align:center">
+                                   <li>
+                                       <a href="#pricing">Pricing</a>
+                                   </li>
+                                   <li>
+                                       <a href="#video">Video</a>
+                                   </li>
+                               </div>
+                           </div>
+                          
+                       </ul>
+                   </div>
+                   <div class="ui-g-12 ui-md-4 social-icons">
+                       <a href="#"><i class="fa fa-facebook-official" aria-hidden="true"></i></a>
+                       <a href="#"><i class="fa fa-twitter-square" aria-hidden="true"></i></a>
+                       <a href="#"> <i class="fa fa-github-square" aria-hidden="true"></i></a>
+                   </div>
+               </div>
+           </div>
+        </div>
+        
+        <h:outputStylesheet name="css/animate.css" library="avalon-layout" />
+        <h:outputStylesheet name="css/layout-#{guestPreferences.theme}.css" library="avalon-layout" />
+    </h:body>
+
+</html>

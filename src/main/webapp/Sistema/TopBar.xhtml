@@ -1,0 +1,50 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pu="http://primefaces.org/avalon">
+
+	<div class="topbar clearfix">
+		<div class="topbar-left">
+			<a href="Home.htm"><p:graphicImage name="/images/logo.png" library="avalon-layout" styleClass="topbar-logo" /></a>
+		</div>
+
+		<div class="topbar-right">
+			<h:form>
+				<a id="menu-button" href="#"> <i class="fa fa-angle-left"></i>
+				</a>
+				<a id="topbar-menu-button" href="#"> <i class="fa fa-bars"></i>
+				</a>
+				<ul class="topbar-items fadeInDown animated">
+					<li>
+						<a href="#"> <i class="topbar-icon fa fa-fw fa-user-o" style="color: blue"></i>
+								<span class="topbar-item-name">Configurações</span>
+						</a>
+						<ul class="layout-menu animated" style="border-radius: 10px;">
+							<li role="menuitem">
+								<div style="width:90%; margin-left: 20px ;">
+									<br/>
+									<div style="width:95%;">
+										<span>Olá </span>
+										<p:outputLabel value="#{loginBean.getUsu()}">!</p:outputLabel>
+									</div>
+								</div>
+							</li>
+						
+							<li role="menuitem">
+								<p:commandLink style="border-radius: 10px; margin-top: 10px; margin-bottom: 10px;"
+									actionListener="#{dashboardBean.deslogar}">
+									<div style="display: flex; justify-content: flex-start;">
+										<i class="fa fa-fw fa-sign-out"></i>
+										<span>Sair</span>
+									</div>
+								</p:commandLink>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</h:form>
+		</div>
+	</div>
+</ui:composition>

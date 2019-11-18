@@ -1,0 +1,205 @@
+<ui:composition template="templateHome.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:define name="title">Home</ui:define>
+
+	<ui:define name="content">
+		<script>
+			function handleCompleteAbrirSugestao(xhr, status, args) {
+				if (args.showDialog) {
+					PF('dialogDetalheVenda').show();
+				}
+			}
+		</script>
+		<h:form id="formPrincipal">
+			<div class="ui-fluid">
+				<div class="ui-g">
+					<div class="ui-g-12" style="padding: 0; margin: 0;">
+						<p:panel styleClass="ui-panelgrid-blank form-group">
+							<p:panelGrid columns="2" layout="grid"
+								style="background-color: lightblue;border-bottom: 5px solid #BCBCBC;"
+								styleClass="ui-panelgrid-blank form-group"
+								columnClasses="ui-grid-col-2,ui-grid-col-10">
+
+								<p:outputPanel>
+									<a href="Home.htm"><p:graphicImage
+											style="height: 65px; margin-left: 10px"
+											name="images/logo.png" library="avalon-layout" /></a>
+								</p:outputPanel>
+
+								<p:panelGrid columns="4" layout="grid"
+									style="background-color: lightblue;"
+									styleClass="ui-panelgrid-blank form-group"
+									columnClasses="ui-grid-col-11,ui-grid-col-1">
+
+									<p:outputPanel />
+									<p:menubar
+										style="background-color: transparent; border: 0px; color: black;">
+										<p:submenu label="Conta" icon="topbar-icon fa fa-fw fa-user-o">
+											<p:menuitem actionListener="#{homeBean.abrirCarrinho}"
+												icon="fa fa-fw fa-shopping-cart" value="Carrinho" />
+											<p:menuitem actionListener="#{homeBean.abrirVendas}"
+												icon="fa fa-fw fa-check" value="Vendas" />
+											<p:menuitem actionListener="#{dashboardBean.deslogar}"
+												style="border-top: 1px solid lightgrey"
+												icon="fa fa-fw fa-sign-out" value="Sair" />
+										</p:submenu>
+									</p:menubar>
+								</p:panelGrid>
+							</p:panelGrid>
+							<p:outputPanel style="padding:10px">
+								<p:dataTable id="tablePesquisa" var="i"
+									paginatorPosition="bottom" value="#{cartBean.carrinho.itens}"
+									reflow="true" rowKey="#{c.id}" scrollable="true"
+									style="height: 750" emptyMessage="Nenhum Produto no Carrinho.">
+
+									<p:column headerText="Excluir" style="width: 80px">
+										<p:commandButton styleClass="btn btn-primary"
+											actionListener="#{cartBean.removeItem(i)}"
+											icon="fa fa-fw fa-trash"
+											update=":formPrincipal:tablePesquisa" />
+									</p:column>
+
+									<p:column headerText="Foto" width="10%">
+										<div align="center">
+											<img src="#{i.produto.imagemPrincipal.urlGrande}" height="75" />
+										</div>
+									</p:column>
+
+									<p:column headerText="Nome do Produto">
+										<div align="center">
+											<p:outputLabel value="#{i.produto.nome}" />
+										</div>
+									</p:column>
+
+									<p:column headerText="Categoria">
+										<div align="center">
+											<p:outputLabel value="#{i.produto.plataforma.descricao}" />
+										</div>
+									</p:column>
+
+									<p:column headerText="Quantidade">
+										<div align="center">
+											<p:inputText type="number" value="#{i.quantidade}">
+												<p:ajax
+													update=":formPrincipal:tablePesquisa:precoItemGeral, :formPrincipal:precoTotal"
+													event="change" />
+											</p:inputText>
+										</div>
+									</p:column>
+
+									<p:column headerText="Preço Unitário">
+										<div align="center">
+											<p:outputLabel value="#{i.produto.preco}"
+												converter="moneyConverter" />
+										</div>
+									</p:column>
+
+									<p:column headerText="Subtotal">
+										<div align="center">
+											<p:outputLabel id="precoItemGeral"
+												value="#{cartBean.getPrecoParcial(i)}"
+												converter="moneyConverter" />
+										</div>
+									</p:column>
+
+								</p:dataTable>
+							</p:outputPanel>
+
+							<p:separator />
+
+							<p:panelGrid columns="2" layout="grid"
+								styleClass="ui-panelgrid-blank form-group">
+
+								<p:outputPanel>
+									<p:outputLabel for="formaPagamento" value="Forma de Pagamento" />
+									<p:selectOneMenu styleClass="form-control" id="formaPagamento"
+										value="#{cartBean.formaDePagamento}">
+										<f:selectItems value="#{cartBean.comboTipoFormaPagamento}" />
+										<p:ajax update=":formPrincipal:panelParcelas" event="change" />
+									</p:selectOneMenu>
+								</p:outputPanel>
+
+								<p:outputPanel id="panelParcelas">
+									<p:outputLabel for="parcelas" value="Parcelas" />
+									<p:selectOneMenu styleClass="form-control" id="parcelas"
+										value="#{cartBean.venda.parcelas}"
+										disabled="#{!cartBean.isCredito()}">
+										<f:selectItems value="#{cartBean.comboParcelas}" />
+									</p:selectOneMenu>
+								</p:outputPanel>
+
+							</p:panelGrid>
+
+							<p:panelGrid columns="3" layout="grid"
+								styleClass="ui-panelgrid-blank form-group"
+								columnClasses="ui-grid-col-9,ui-grid-col-1,ui-grid-col-2">
+
+								<p:outputPanel>
+									<p:outputLabel value="Endereço" />
+									<p:selectOneMenu styleClass="form-control"
+										value="#{cartBean.enderecoEscolhido}">
+										<f:selectItems value="#{cartBean.enderecos}" />
+										<p:ajax update=":formPrincipal:panelFrete,:formPrincipal:precoTotal" event="change" />
+									</p:selectOneMenu>
+								</p:outputPanel>
+								<p:outputLabel />
+								<p:outputPanel id="panelFrete"
+									style="font-size: 20px; font-weight: bold; border: 1px solid grey; border-radius: 10px; padding: 10px; margin-top: 8px;display: flex; justify-content: center">
+									<p:outputLabel for="precoFrete" value="Preço Frete : R$ " />
+									<p:outputLabel id="precoFrete" value="#{cartBean.precoFrete}"
+										converter="moneyConverter" />
+								</p:outputPanel>
+							</p:panelGrid>
+
+							<br />
+
+							<p:separator />
+
+							<br />
+							<p:panelGrid columns="3" layout="grid"
+								styleClass="ui-panelgrid-blank form-group"
+								columnClasses="ui-grid-col-2,ui-grid-col-6,ui-grid-col-4">
+								<p:outputPanel
+									style="font-size: 20px; font-weight: bold; color: red; border: 1px solid grey; border-radius: 10px; padding: 10px; display: flex; justify-content: center">
+									<p:outputLabel value="Preço Total : R$ " />
+									<p:outputLabel id="precoTotal" value="#{cartBean.precoTotal}"
+										converter="moneyConverter" />
+								</p:outputPanel>
+								<p:outputPanel />
+								<p:commandButton styleClass="btn-primary"
+									value="Finalizar Compra" icon="fa fa-fw fa-check"
+									actionListener="#{cartBean.encerrarCompra()}"
+									oncomplete="handleCompleteAbrirSugestao(xhr, status, args)"
+									update=":formPrincipal" />
+							</p:panelGrid>
+
+						</p:panel>
+					</div>
+				</div>
+			</div>
+			<p:dialog id="dialogDetalheVenda" widgetVar="dialogDetalheVenda"
+				header="Venda Concluída" showEffect="clip" hideEffect="clip"
+				resizable="false" modal="true" responsive="true" height="100"
+				width="500" closeOnEscape="true">
+
+				<p:outputPanel style="font-size: 15px">
+					<p:outputLabel value="Número da Venda: "></p:outputLabel>
+					<p:outputLabel value="#{cartBean.venda.numeroDaVenda}"></p:outputLabel>
+				</p:outputPanel>
+				<br />
+				<p:outputPanel style="display: flex; justify-content: center">
+					<p:commandButton styleClass="btn btn-primary"
+						value="Voltar para Home"
+						actionListener="#{cartBean.voltarParaOMenu}"
+						oncomplete="PF('dialogDetalheVenda').hide();" />
+				</p:outputPanel>
+
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

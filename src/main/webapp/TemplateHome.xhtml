@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Noobies</title>
+
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="theme-color"
+		content="#{guestPreferences.themeColors[guestPreferences.theme]}" />
+
+
+	<h:outputScript name="js/nanoscroller.js" library="avalon-layout" />
+	<h:outputScript name="js/layout.js" library="avalon-layout" />
+	<h:outputScript name="Funcoes.js" library="js" />
+	<link rel="shortcut icon" type="image/x-icon"
+		href="https://uploaddeimagens.com.br/imagens/favicon-ico-34aef661-1a6f-49dd-a49c-8f45515d53ae" />
+	
+</h:head>
+
+<h:body>
+
+	<div class="layout-wrapper #{guestPreferences.menuLayout}">
+
+		<div>
+			<ui:insert name="content" />
+		</div>
+
+		<h:form>
+			<p:confirmDialog global="true" showEffect="clip" hideEffect="clip"
+				responsive="true">
+				<p:commandButton value="Sim" styleClass="ui-confirmdialog-yes"
+					icon="ui-icon-check" />
+				<p:commandButton value="Não" styleClass="ui-confirmdialog-no"
+					icon="ui-icon-close" />
+			</p:confirmDialog>
+		</h:form>
+	</div>
+
+	<p:ajaxStatus
+		style="width:32px;height:32px;position:fixed;right:7px;bottom:7px">
+		<f:facet name="start">
+			<i class="fa fa-circle-o-notch fa-spin ajax-loader"
+				aria-hidden="true"></i>
+		</f:facet>
+
+		<f:facet name="complete">
+			<h:outputText value="" />
+		</f:facet>
+	</p:ajaxStatus>
+
+	<h:outputStylesheet name="css/nanoscroller.css" library="avalon-layout" />
+	<h:outputStylesheet name="css/animate.css" library="avalon-layout" />
+	<h:outputStylesheet name="css/layout-#{guestPreferences.layout}.css"
+		library="avalon-layout" />
+
+	<h:outputStylesheet name="login.css" library="css" />
+</h:body>
+
+</html>
