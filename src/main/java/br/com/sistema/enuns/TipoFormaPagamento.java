@@ -10,8 +10,6 @@ public enum TipoFormaPagamento {
 	
 	Debito("Débito"),
 	
-	Deposito("Depósito"),
-	
 	PayPal("PayPal"),
 	
 	PagSeguro("PagSeguro");

@@ -6,6 +6,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
+import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Session;
@@ -191,6 +192,11 @@ public class ProdutosDAO extends DAO<Produto> {
 			
 			Query<CarrinhoItem> q = session.createQuery(query);
 			
+			for(CarrinhoItem item : q.getResultList()) {
+				Hibernate.initialize(item.getProduto());
+				Hibernate.initialize(item.getQuantidade());
+			}
+			
 			return q.getResultList();
 		} finally {
 			session.close();
@@ -212,6 +218,28 @@ public class ProdutosDAO extends DAO<Produto> {
 		}
 		
 
+	}
+
+	public CarrinhoItem getCarrinhoItem(CarrinhoItem c) {
+		Session session = this.getSessionPronta();
+		try {			
+			CriteriaBuilder builder = session.getCriteriaBuilder();
+			CriteriaQuery<CarrinhoItem> query = builder.createQuery(CarrinhoItem.class);
+			Root<CarrinhoItem> root = query.from(CarrinhoItem.class);
+			
+			query.select(root).where(builder.equal(root.get("id"), c.getId()));
+			
+			Query<CarrinhoItem> q = session.createQuery(query);
+			
+			for(CarrinhoItem item : q.getResultList()) {
+				Hibernate.initialize(item.getProduto());
+				Hibernate.initialize(item.getQuantidade());
+			}
+			
+			return q.getSingleResult();
+		} finally {
+			session.close();
+		}
 	}
 
 }

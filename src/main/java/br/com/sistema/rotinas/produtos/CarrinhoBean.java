@@ -32,6 +32,7 @@ import br.com.sistema.rotinas.usuario.Usuario;
 import br.com.sistema.rotinas.usuario.UsuarioDAO;
 import br.com.sistema.rotinas.usuario.UsuarioEndereco;
 import br.com.sistema.rotinas.vendas.Venda;
+import br.com.sistema.rotinas.vendas.VendaDAO;
 import br.com.sistema.util.Combos;
 import br.com.sistema.util.Constantes;
 import br.com.sistema.util.ParametrosSistema;
@@ -129,7 +130,12 @@ public class CarrinhoBean implements Serializable {
 
 	public void encerrarCompra() throws Exception {
 		Session session = HibernateUtil.getSession();
+		Transaction tx;
 		try {
+			tx = session.beginTransaction();
+			if(formaDePagamento == TipoFormaPagamento.NaoDefinida) 
+				throw new MensagemException(Mensagens.getMensagem("Selecione uma forma de pagamento!"));
+			
 			usuarioEnderecoEscolhido = new UsuarioDAO().getEnderecoPorString(enderecoEscolhido, usuario);
 
 			venda.setPrecoTotal(this.getPrecoTotal());
@@ -138,19 +144,23 @@ public class CarrinhoBean implements Serializable {
 			venda.setEndereco(usuarioEnderecoEscolhido);
 
 			if (venda.getId() > 0) {
-				session.update(venda);
+				new VendaDAO().update(venda);
+				session.flush();
 			} else {
-				session.save(venda);
+				new VendaDAO().save(venda);
+				session.flush();
 			}
 
 			List<CarrinhoItem> lista = new ProdutosDAO().getItensDoCarrinho(carrinho);
 
 			for (CarrinhoItem c : lista) {
-
-				Produto p = c.getProduto();
-				p.setQuantidade(p.getQuantidade() - c.getQuantidade());
+				c = new ProdutosDAO().getCarrinhoItem(c);
+				Produto p = new ProdutosDAO().load(c.getProduto().getId());
+				int quantidadeAposRemover = p.getQuantidade() - c.getQuantidade();
+				p.setQuantidade(quantidadeAposRemover);
 				if (p.getQuantidade() >= 0) {
 					session.update(p);
+					session.flush();
 				} else {
 					throw new MensagemException(Mensagens
 							.getMensagem("Não temos o produto " + p.getNome() + " nesta quantidade em estoque!"));
@@ -159,8 +169,11 @@ public class CarrinhoBean implements Serializable {
 				c.setCarrinho(null);
 				c.setVenda(venda);
 				session.update(c);
+				session.flush();
 			}
-
+			
+			tx.commit();
+			
 			FacesUtil.addCallbackParam("showDialog", true);
 
 		} catch (HibernateException ex) {
