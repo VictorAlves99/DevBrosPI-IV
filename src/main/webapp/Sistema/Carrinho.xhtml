@@ -144,7 +144,9 @@
 									<p:selectOneMenu styleClass="form-control"
 										value="#{cartBean.enderecoEscolhido}">
 										<f:selectItems value="#{cartBean.enderecos}" />
-										<p:ajax update=":formPrincipal:panelFrete,:formPrincipal:precoTotal" event="change" />
+										<p:ajax
+											update=":formPrincipal:panelFrete,:formPrincipal:precoTotal"
+											event="change" />
 									</p:selectOneMenu>
 								</p:outputPanel>
 								<p:outputLabel />

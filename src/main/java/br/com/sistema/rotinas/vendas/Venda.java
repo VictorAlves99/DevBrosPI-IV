@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,6 +20,7 @@ import org.hibernate.annotations.CascadeType;
 
 import br.com.sistema.enuns.TipoCondicaoPagamento;
 import br.com.sistema.enuns.TipoFormaPagamento;
+import br.com.sistema.enuns.TipoStatusVenda;
 import br.com.sistema.rotinas.produtos.CarrinhoItem;
 import br.com.sistema.rotinas.usuario.Usuario;
 import br.com.sistema.rotinas.usuario.UsuarioEndereco;
@@ -50,6 +52,10 @@ public class Venda implements Serializable {
 
 	@Column(name = "precoTotal", nullable = false, length = 30)
 	private double precoTotal;
+	
+	@Enumerated
+	@Column(name = "status", nullable = false)
+	private TipoStatusVenda status;
 
 	@ManyToOne(optional = false)
 	private UsuarioEndereco endereco;
@@ -134,6 +140,14 @@ public class Venda implements Serializable {
 
 	public void setEndereco(UsuarioEndereco endereco) {
 		this.endereco = endereco;
+	}
+
+	public TipoStatusVenda getStatus() {
+		return status;
+	}
+
+	public void setStatus(TipoStatusVenda status) {
+		this.status = status;
 	}
 
 	public static long getSerialversionuid() {

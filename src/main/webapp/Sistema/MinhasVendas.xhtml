@@ -221,13 +221,22 @@
 						rendered="#{vendaBean.objeto.parcelas.descricao == vendaBean.AVista.descricao}">
 					</p:outputPanel>
 					<p:outputPanel
+						style="font-size: 17px; font-weight: bold; color: black; border: 1px solid grey; border-radius: 10px; padding: 10px; display: flex; justify-content: center">
+						<p:outputLabel value="Status: " />
+						<p:outputLabel id="status"
+							value="#{vendaBean.objeto.status.descricao}"/>
+					</p:outputPanel>
+				</p:panelGrid>
+
+				<p:panelGrid columns="1" layout="grid"
+					styleClass="ui-panelgrid-blank form-group">
+					<p:outputPanel
 						style="font-size: 17px; font-weight: bold; color: red; border: 1px solid grey; border-radius: 10px; padding: 10px; display: flex; justify-content: center">
 						<p:outputLabel value="Preço Total : R$ " />
 						<p:outputLabel id="precoTotal"
 							value="#{vendaBean.objeto.precoTotal}" converter="moneyConverter" />
 					</p:outputPanel>
 				</p:panelGrid>
-
 			</p:dialog>
 		</h:form>
 	</ui:define>

@@ -287,7 +287,7 @@ public class HomeBean implements Serializable {
 
 		try {
 			FacesContext.getCurrentInstance().getExternalContext()
-					.redirect("RelatorioVendas" + Constantes.EXTENSAO_JSF);
+					.redirect("MinhasVendas" + Constantes.EXTENSAO_JSF);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

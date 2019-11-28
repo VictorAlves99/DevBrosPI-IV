@@ -1,0 +1,111 @@
+<ui:composition template="template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:define name="title">Relatório de Vendas</ui:define>
+
+	<ui:define name="content">
+		<h:form id="formPrincipal">
+			<div class="ui-fluid">
+				<div class="ui-g">
+					<div class="ui-g-12">
+						<p:panel>
+							<f:facet name="header">
+								<i class="fa fa-fw fa-user-o" />
+								<span>Relatório de Vendas</span>
+							</f:facet>
+							<p:outputPanel id="panelPrincipal">
+								<p:outputPanel>
+									<p:panelGrid columns="3" layout="grid"
+										styleClass="ui-panelgrid-blank form-group">
+
+										<p:inputText styleClass="form-control" id="textoPesquisa"
+											value="#{vendaBean.textoPesquisa}"
+											placeholder="Pesquisar por Número de Venda..." />
+
+										<p:column>
+											<p:commandButton styleClass="primary-btn"
+												style="max-width:130px" icon="ui-icon-search"
+												actionListener="#{vendaBean.pesquisarVendasGerais}"
+												value="Pesquisar" update="tableVendas" />
+
+										</p:column>
+
+									</p:panelGrid>
+
+									<p:dataTable id="tableVendas" var="v"
+										paginatorPosition="bottom" value="#{vendaBean.vendas}"
+										selectionMode="single"
+										emptyMessage="Nenhuma venda encontrado." reflow="true"
+										rowKey="#{v.id}" paginator="true" rows="50">
+
+										<p:column headerText="Id" sortBy="#{v.id}" style="width:150px">
+											<div align="center">
+												<h:outputText value="#{v.id}" />
+											</div>
+										</p:column>
+
+										<p:column headerText="Número da Venda"
+											sortBy="#{v.numeroDaVenda}">
+											<div align="center">
+												<h:outputText value="#{v.numeroDaVenda}" />
+											</div>
+										</p:column>
+
+										<p:column headerText="Status" sortBy="#{v.status.descricao}">
+											<div align="center">
+												<h:outputText value="#{v.status.descricao}" />
+											</div>
+										</p:column>
+
+										<p:column headerText="Preço Total" sortBy="#{v.precoTotal}">
+											<div align="center">
+												<h:outputText value="#{v.precoTotal}" />
+											</div>
+										</p:column>
+
+										<p:column headerText="Editar Status" style="width:150px;">
+											<div align="center">
+												<p:commandButton style="max-width:80px;height:18px"
+													icon="fa fa-fw fa-pencil" action="#{vendaBean.abrirVenda(v)}"
+													oncomplete="PF('dialogAlteraStatus').show();"
+													update="formPrincipal:panelPrincipal, formDialogs" />
+											</div>
+										</p:column>
+									</p:dataTable>
+								</p:outputPanel>
+							</p:outputPanel>
+						</p:panel>
+					</div>
+				</div>
+			</div>
+		</h:form>
+		<h:form id="formDialogs">
+			<p:dialog id="dialogAlteraStatus" widgetVar="dialogAlteraStatus" header="Alterar Status"
+				showEffect="clip" hideEffect="clip" resizable="false" modal="true"
+				responsive="true" height="120" width="600" closeOnEscape="true">
+
+				<p:panelGrid columns="1" layout="grid"
+					styleClass="ui-panelgrid-blank form-group">
+					<p:selectOneMenu value="#{vendaBean.status}" style="width: 100%" >
+						<f:selectItems value="#{vendaBean.comboStatus}" var="s" itemLabel="#{s.descricao}" itemValue="#{s.descricao}"/>
+					</p:selectOneMenu>
+				</p:panelGrid>
+				
+				<br/>
+				
+				<p:commandButton styleClass="success-btn" value="Atualizar Status"
+					actionListener="#{vendaBean.alteraStatus()}"
+					icon="fa fa-fw fa-check"
+					style="width: 100%"
+					oncomplete="PF('dialogAlteraStatus').hide();"
+					update="formPrincipal:panelPrincipal,:formMenu:grow" />
+
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>
+

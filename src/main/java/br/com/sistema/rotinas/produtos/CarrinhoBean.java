@@ -20,8 +20,10 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import br.com.sistema.amazon.AmazonUtil;
+import br.com.sistema.enuns.TipoCondicaoPagamento;
 import br.com.sistema.enuns.TipoFormaPagamento;
 import br.com.sistema.enuns.TipoOrigemArquivoBinario;
+import br.com.sistema.enuns.TipoStatusVenda;
 import br.com.sistema.exceptions.MensagemException;
 import br.com.sistema.hibernate.HibernateUtil;
 import br.com.sistema.jsf.FacesUtil;
@@ -141,7 +143,12 @@ public class CarrinhoBean implements Serializable {
 			venda.setPrecoTotal(this.getPrecoTotal());
 			venda.setCliente(this.usuario);
 			venda.setFormaPagamento(formaDePagamento);
+			
+			if(formaDePagamento != TipoFormaPagamento.Credito)
+				venda.setParcelas(TipoCondicaoPagamento.AVista);
+			
 			venda.setEndereco(usuarioEnderecoEscolhido);
+			venda.setStatus(TipoStatusVenda.AguardandoPagamento);
 
 			if (venda.getId() > 0) {
 				new VendaDAO().update(venda);
