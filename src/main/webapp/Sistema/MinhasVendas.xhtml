@@ -43,7 +43,7 @@
 											<p:menuitem actionListener="#{homeBean.abrirCarrinho}"
 												icon="fa fa-fw fa-shopping-cart" value="Carrinho" />
 											<p:menuitem actionListener="#{homeBean.abrirVendas}"
-												icon="fa fa-fw fa-check" value="Vendas" />
+												icon="fa fa-fw fa-check" value="Meus Pedidos" />
 											<p:menuitem actionListener="#{dashboardBean.deslogar}"
 												style="border-top: 1px solid lightgrey"
 												icon="fa fa-fw fa-sign-out" value="Sair" />
@@ -112,6 +112,20 @@
 										sortBy="#{v.numeroDaVenda}">
 										<div align="center">
 											<p:outputLabel value="#{v.numeroDaVenda}" />
+										</div>
+									</p:column>
+
+									<p:column headerText="Data da Venda"
+										sortBy="#{v.dataVenda}">
+										<div align="center">
+											<p:outputLabel value="#{v.dataVenda}" converter="dataConverter"/>
+										</div>
+									</p:column>
+
+									<p:column headerText="Status"
+										sortBy="#{v.status.descricao}">
+										<div align="center">
+											<p:outputLabel value="#{v.status.descricao}" />
 										</div>
 									</p:column>
 

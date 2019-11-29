@@ -1,7 +1,12 @@
 package br.com.sistema.rotinas.produtos;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Serializable;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +40,7 @@ import br.com.sistema.rotinas.usuario.UsuarioDAO;
 import br.com.sistema.rotinas.usuario.UsuarioEndereco;
 import br.com.sistema.rotinas.vendas.Venda;
 import br.com.sistema.rotinas.vendas.VendaDAO;
+import br.com.sistema.util.Caracter;
 import br.com.sistema.util.Combos;
 import br.com.sistema.util.Constantes;
 import br.com.sistema.util.ParametrosSistema;
@@ -61,19 +67,37 @@ public class CarrinhoBean implements Serializable {
 
 	private TipoFormaPagamento formaDePagamento;
 
+	private CarrinhoItem carrinhoItem;
+	private String cep;
+
+	private List<CarrinhoItem> itens;
+
+	private String logradouro;
+
+	private String bairro;
+
+	private String cidade;
+
+	private String uf;
+
+	private String numero;
+
+	private String enderecoCompleto;
+
 	public CarrinhoBean() {
 		enderecos = carregarEnderecos();
 		enderecoEscolhido = enderecos.get(0);
 		usuarioEnderecoEscolhido = new UsuarioDAO().getEnderecoPorString(enderecoEscolhido, usuario);
 		
 		carrinho = carregaCarrinho();
+		itens = carrinho.getItens();
 		
-		if (carrinho.getItens() != null && carrinho.getItens().size() > 0) {
-			for (CarrinhoItem i : carrinho.getItens()) {
+		if (itens != null && itens.size() > 0) {
+			for (CarrinhoItem i : itens) {
 				carregarImagemProduto(i.getProduto());
 			}
 		} else {
-			carrinho.setItens(new ArrayList<CarrinhoItem>());
+			itens = new ArrayList<CarrinhoItem>();
 		}
 		
 		venda = new Venda();
@@ -109,15 +133,21 @@ public class CarrinhoBean implements Serializable {
 		}
 	}
 
-	public void removeItem(CarrinhoItem item) {
+	public void removeItem(CarrinhoItem item) throws Exception {
 		Session session = HibernateUtil.getSession();
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
 
-			session.delete(item);
-
+			this.carrinhoItem = new ProdutosDAO().getCarrinhoItem(item);
+			
+			session.delete(this.carrinhoItem);
+			
+			itens.remove(this.carrinhoItem);
+			
 			tx.commit();
+			
+			FacesContext.getCurrentInstance().getExternalContext().redirect("Carrinho" + Constantes.EXTENSAO_JSF);
 
 		} catch (HibernateException ex) {
 			tx.rollback();
@@ -282,6 +312,89 @@ public class CarrinhoBean implements Serializable {
 
 	}
 
+	public void cadastrarEndereco() throws Exception {
+
+		Session session = HibernateUtil.getSession();
+
+		Transaction tx = null;
+
+		try {
+			UsuarioEndereco endereco = new UsuarioEndereco();
+
+			String precoDols1 = Caracter.getRandomIntRes(1);
+			String precoDols2 = Caracter.getRandomInt(1);
+			String precoCents = Caracter.getRandomInt(2);
+			String preco = precoDols1 + precoDols2 + "." + precoCents;
+			
+			enderecoCompleto = buscarCep(this.cep);
+
+			endereco.setPrecoFrete(Double.parseDouble(preco));
+			endereco.setUsuario(this.usuario);
+			endereco.setEndereco(enderecoCompleto);
+			
+			tx = session.beginTransaction();
+
+			session.save(endereco);
+
+			session.flush();
+
+			tx.commit();
+
+			FacesContext.getCurrentInstance().getExternalContext().redirect("Carrinho" + Constantes.EXTENSAO_JSF);
+		} catch (HibernateException ex) {
+			tx.rollback();
+			throw ex;
+		} catch (Exception ex) {
+			tx.rollback();
+			throw ex;
+		} finally {
+			session.close();
+		}
+	}
+	
+	public void buscarCEP() {
+		
+		enderecoCompleto = buscarCep(this.cep);
+		Mensagens.gerarMensagemGenerica(enderecoCompleto);
+		
+	}
+	
+	public String buscarCep(String cep) {
+        String json;        
+
+        try {
+            URL url = new URL("http://viacep.com.br/ws/"+ cep +"/json");
+            URLConnection urlConnection = url.openConnection();
+            InputStream is = urlConnection.getInputStream();
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+
+            StringBuilder jsonSb = new StringBuilder();
+
+            br.lines().forEach(l -> jsonSb.append(l.trim()));
+            json = jsonSb.toString();
+            
+            json = json.replaceAll("[{},:]", "");
+            json = json.replaceAll("\"", "\n");                       
+            String array[] = new String[30];
+            array = json.split("\n");
+                             
+            logradouro = array[7];            
+            bairro = array[15];
+            cidade = array[19]; 
+            uf = array[23];
+            
+            logradouro = new String(logradouro.getBytes(), "UTF-8");
+            bairro = new String(bairro.getBytes(), "UTF-8");
+            cidade = new String(cidade.getBytes(), "UTF-8");
+            uf = new String(uf.getBytes(), "UTF-8");
+            
+            return logradouro + "," + numero + " - " + bairro + "," + cidade + "," + uf;
+            
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 	public List<SelectItem> getComboTipoFormaPagamento() {
 		return Combos.getComboTipoFormaPagamento();
 	}
@@ -389,6 +502,78 @@ public class CarrinhoBean implements Serializable {
 
 	public void setPrecoFrete(double precoFrete) {
 		this.precoFrete = precoFrete;
+	}
+
+	public CarrinhoItem getCarrinhoItem() {
+		return carrinhoItem;
+	}
+
+	public void setCarrinhoItem(CarrinhoItem carrinhoItem) {
+		this.carrinhoItem = carrinhoItem;
+	}
+
+	public List<CarrinhoItem> getItens() {
+		return itens;
+	}
+
+	public void setItens(List<CarrinhoItem> itens) {
+		this.itens = itens;
+	}
+
+	public String getCep() {
+		return cep;
+	}
+
+	public void setCep(String cep) {
+		this.cep = cep;
+	}
+
+	public String getLogradouro() {
+		return logradouro;
+	}
+
+	public void setLogradouro(String logradouro) {
+		this.logradouro = logradouro;
+	}
+
+	public String getBairro() {
+		return bairro;
+	}
+
+	public void setBairro(String bairro) {
+		this.bairro = bairro;
+	}
+
+	public String getCidade() {
+		return cidade;
+	}
+
+	public void setCidade(String cidade) {
+		this.cidade = cidade;
+	}
+
+	public String getUf() {
+		return uf;
+	}
+
+	public void setUf(String uf) {
+		this.uf = uf;
+	}
+
+	public String getNumero() {
+		return numero;
+	}
+
+	public void setNumero(String numero) {
+		this.numero = numero;
+	}
+
+	public String getEnderecoCompleto() {
+		return enderecoCompleto;
+	}
+
+	public void setEnderecoCompleto(String enderecoCompleto) {
+		this.enderecoCompleto = enderecoCompleto;
 	}
 
 }

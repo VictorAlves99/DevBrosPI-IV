@@ -311,6 +311,21 @@ public class Caracter {
 
 		return armazenaChaves;
 	}
+	
+	public static String getRandomIntRes(int tamanho) {
+		String letras = "012";
+
+		Random random = new Random();
+
+		String armazenaChaves = "";
+		int index = -1;
+		for (int i = 0; i < tamanho; i++) {
+			index = random.nextInt(letras.length());
+			armazenaChaves += letras.substring(index, index + 1);
+		}
+
+		return armazenaChaves;
+	}
 
 	public static String retirarCaracterEspecial(String s) {
 		String temp = Normalizer.normalize(s, java.text.Normalizer.Form.NFD);

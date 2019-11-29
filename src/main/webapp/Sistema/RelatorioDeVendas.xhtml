@@ -55,6 +55,13 @@
 											</div>
 										</p:column>
 
+										<p:column headerText="Data da Venda" sortBy="#{v.dataVenda}">
+											<div align="center">
+												<p:outputLabel value="#{v.dataVenda}"
+													converter="dataConverter" />
+											</div>
+										</p:column>
+
 										<p:column headerText="Status" sortBy="#{v.status.descricao}">
 											<div align="center">
 												<h:outputText value="#{v.status.descricao}" />
@@ -70,7 +77,8 @@
 										<p:column headerText="Editar Status" style="width:150px;">
 											<div align="center">
 												<p:commandButton style="max-width:80px;height:18px"
-													icon="fa fa-fw fa-pencil" action="#{vendaBean.abrirVenda(v)}"
+													icon="fa fa-fw fa-pencil"
+													action="#{vendaBean.abrirVenda(v)}"
 													oncomplete="PF('dialogAlteraStatus').show();"
 													update="formPrincipal:panelPrincipal, formDialogs" />
 											</div>
@@ -84,23 +92,24 @@
 			</div>
 		</h:form>
 		<h:form id="formDialogs">
-			<p:dialog id="dialogAlteraStatus" widgetVar="dialogAlteraStatus" header="Alterar Status"
-				showEffect="clip" hideEffect="clip" resizable="false" modal="true"
-				responsive="true" height="120" width="600" closeOnEscape="true">
+			<p:dialog id="dialogAlteraStatus" widgetVar="dialogAlteraStatus"
+				header="Alterar Status" showEffect="clip" hideEffect="clip"
+				resizable="false" modal="true" responsive="true" height="120"
+				width="600" closeOnEscape="true">
 
 				<p:panelGrid columns="1" layout="grid"
 					styleClass="ui-panelgrid-blank form-group">
-					<p:selectOneMenu value="#{vendaBean.status}" style="width: 100%" >
-						<f:selectItems value="#{vendaBean.comboStatus}" var="s" itemLabel="#{s.descricao}" itemValue="#{s.descricao}"/>
+					<p:selectOneMenu value="#{vendaBean.status}" style="width: 100%">
+						<f:selectItems value="#{vendaBean.comboStatus}" var="s"
+							itemLabel="#{s.descricao}" itemValue="#{s.descricao}" />
 					</p:selectOneMenu>
 				</p:panelGrid>
-				
-				<br/>
-				
+
+				<br />
+
 				<p:commandButton styleClass="success-btn" value="Atualizar Status"
 					actionListener="#{vendaBean.alteraStatus()}"
-					icon="fa fa-fw fa-check"
-					style="width: 100%"
+					icon="fa fa-fw fa-check" style="width: 100%"
 					oncomplete="PF('dialogAlteraStatus').hide();"
 					update="formPrincipal:panelPrincipal,:formMenu:grow" />
 

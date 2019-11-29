@@ -105,9 +105,10 @@ public class UsuarioBean implements Serializable {
 		try {
 			UsuarioEndereco endereco = new UsuarioEndereco();
 
-			String precoDols = Caracter.getRandomInt(2);
+			String precoDols1 = Caracter.getRandomIntRes(1);
+			String precoDols2 = Caracter.getRandomInt(1);
 			String precoCents = Caracter.getRandomInt(2);
-			String preco = precoDols + "." + precoCents;
+			String preco = precoDols1 + precoDols2 + "." + precoCents;
 
 			endereco.setPrecoFrete(Double.parseDouble(preco));
 			endereco.setUsuario(this.objeto);

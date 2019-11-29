@@ -14,6 +14,49 @@
 					PF('dialogDetalheVenda').show();
 				}
 			}
+
+			function meu_callback(conteudo) {
+				if (!("erro" in conteudo)) {
+					//Atualiza os campos com os valores.
+					document.getElementById('rua').value = (conteudo.logradouro);
+					document.getElementById('bairro').value = (conteudo.bairro);
+					document.getElementById('cidade').value = (conteudo.localidade);
+					document.getElementById('uf').value = (conteudo.uf);
+				} //end if.
+				else {
+					//CEP não Encontrado.
+					limpa_formulário_cep();
+					alert("CEP não encontrado.");
+				}
+			}
+
+			function pesquisacep(valor) {
+
+				//Nova variável "cep" somente com dígitos.
+				var cep = valor.replace(/\D/g, '');
+
+				//Verifica se campo cep possui valor informado.
+				if (cep != "") {
+
+					//Expressão regular para validar o CEP.
+					var validacep = /^[0-9]{8}$/;
+
+					//Valida o formato do CEP.
+					if (validacep.test(cep)) {
+
+						//Cria um elemento javascript.
+						var script = document.createElement('script');
+
+						//Sincroniza com o callback.
+						script.src = 'https://viacep.com.br/ws/' + cep
+								+ '/json/?callback=meu_callback';
+
+						//Insere script no documento e carrega o conteúdo.
+						document.body.appendChild(script);
+
+					}
+				}
+			};
 		</script>
 		<h:form id="formPrincipal">
 			<div class="ui-fluid">
@@ -43,7 +86,7 @@
 											<p:menuitem actionListener="#{homeBean.abrirCarrinho}"
 												icon="fa fa-fw fa-shopping-cart" value="Carrinho" />
 											<p:menuitem actionListener="#{homeBean.abrirVendas}"
-												icon="fa fa-fw fa-check" value="Vendas" />
+												icon="fa fa-fw fa-check" value="Meus Pedidos" />
 											<p:menuitem actionListener="#{dashboardBean.deslogar}"
 												style="border-top: 1px solid lightgrey"
 												icon="fa fa-fw fa-sign-out" value="Sair" />
@@ -51,18 +94,11 @@
 									</p:menubar>
 								</p:panelGrid>
 							</p:panelGrid>
-							<p:outputPanel style="padding:10px">
+							<p:outputPanel style="padding:10px" id="panelItens">
 								<p:dataTable id="tablePesquisa" var="i"
-									paginatorPosition="bottom" value="#{cartBean.carrinho.itens}"
-									reflow="true" rowKey="#{c.id}" scrollable="true"
+									paginatorPosition="bottom" value="#{cartBean.itens}"
+									reflow="true" rowKey="#{i.id}" scrollable="true"
 									style="height: 750" emptyMessage="Nenhum Produto no Carrinho.">
-
-									<p:column headerText="Excluir" style="width: 80px">
-										<p:commandButton styleClass="btn btn-primary"
-											actionListener="#{cartBean.removeItem(i)}"
-											icon="fa fa-fw fa-trash"
-											update=":formPrincipal:tablePesquisa" />
-									</p:column>
 
 									<p:column headerText="Foto" width="10%">
 										<div align="center">
@@ -107,6 +143,16 @@
 										</div>
 									</p:column>
 
+									<p:column headerText="Excluir" style="width: 80px">
+										<p:commandButton styleClass="btn btn-primary"
+											actionListener="#{cartBean.removeItem(i)}"
+											icon="fa fa-fw fa-trash" update="formPrincipal">
+											<p:confirm header="Retirar Produto"
+												message="Deseja realmente retirar este Produto do Carrinho?"
+												icon="ui-icon-alert" />
+										</p:commandButton>
+									</p:column>
+
 								</p:dataTable>
 							</p:outputPanel>
 
@@ -137,7 +183,7 @@
 
 							<p:panelGrid columns="3" layout="grid"
 								styleClass="ui-panelgrid-blank form-group"
-								columnClasses="ui-grid-col-9,ui-grid-col-1,ui-grid-col-2">
+								columnClasses="ui-grid-col-8,ui-grid-col-2,ui-grid-col-2">
 
 								<p:outputPanel>
 									<p:outputLabel value="Endereço" />
@@ -149,7 +195,13 @@
 											event="change" />
 									</p:selectOneMenu>
 								</p:outputPanel>
-								<p:outputLabel />
+
+								<p:commandButton styleClass="success-btn"
+									value="Adicionar Endereço" style="margin-top: 22px;"
+									update=":formPrincipal,:formMenu:grow"
+									icon="fa fa-fw fa-map-marker" id="endereco"
+									oncomplete="PF('dialogAdicionarEndereco').show();" />
+
 								<p:outputPanel id="panelFrete"
 									style="font-size: 20px; font-weight: bold; border: 1px solid grey; border-radius: 10px; padding: 10px; margin-top: 8px;display: flex; justify-content: center">
 									<p:outputLabel for="precoFrete" value="Preço Frete : R$ " />
@@ -200,6 +252,74 @@
 						actionListener="#{cartBean.voltarParaOMenu}"
 						oncomplete="PF('dialogDetalheVenda').hide();" />
 				</p:outputPanel>
+
+			</p:dialog>
+			<p:dialog id="dialogAdicionarEndereco" header="Adicionar Endereço"
+				widgetVar="dialogAdicionarEndereco" showEffect="clip"
+				hideEffect="clip" resizable="false" modal="true" responsive="true"
+				height="450" width="700" closeOnEscape="true">
+
+				<p:panelGrid columns="2" layout="grid"
+					styleClass="ui-panelgrid-blank form-group"
+					columnClasses="ui-grid-col-4,ui-grid-col-8">
+					<p:outputLabel value="Digite seu CEP:" />
+					<p:inputMask id="cep" style="width: 100%" value="#{cartBean.cep}"
+						mask="99999-999" />
+
+					<p:outputLabel value="Digite seu Número:" />
+					<p:inputText style="width: 100%" value="#{cartBean.numero}" />
+
+				</p:panelGrid>
+
+				<p:panelGrid columns="1" layout="grid"
+					styleClass="ui-panelgrid-blank form-group">
+
+					<p:commandButton styleClass="primary-btn" value="Buscar Endereço"
+						actionListener="#{cartBean.buscarCEP}" icon="ui-icon-search"
+						style="width: 100%"
+						oncomplete="PF('dialogAdicionarEndereco').show();"
+						update=":formPrincipal:dialogAdicionarEndereco,:formMenu:grow" />
+
+				</p:panelGrid>
+
+				<p:separator />
+
+				<p:panelGrid columns="1" layout="grid"
+					styleClass="ui-panelgrid-blank form-group">
+					<p:outputPanel style="font-size: 17px; text-align: center">
+						<p:outputLabel value="Informações do Endereço" />
+					</p:outputPanel>
+				</p:panelGrid>
+
+				<p:separator />
+
+				<p:panelGrid columns="2" layout="grid"
+					styleClass="ui-panelgrid-blank form-group"
+					columnClasses="ui-grid-col-4,ui-grid-col-8">
+					<p:outputLabel value="Logradouro:" />
+					<p:inputText style="width: 100%" value="#{cartBean.logradouro}" />
+
+					<p:outputLabel value="Bairro:" />
+					<p:inputText style="width: 100%" value="#{cartBean.bairro}" />
+
+					<p:outputLabel value="Cidade:" />
+					<p:inputText style="width: 100%" value="#{cartBean.cidade}" />
+
+					<p:outputLabel value="UF:" />
+					<p:inputText style="width: 100%" value="#{cartBean.uf}" />
+
+					<p:outputLabel value="Endereço Completo:" />
+					<p:inputText style="width: 100%"
+						value="#{cartBean.enderecoCompleto}" />
+				</p:panelGrid>
+
+				<p:separator />
+
+				<p:commandButton styleClass="success-btn" value="Adicionar Endereço"
+					actionListener="#{cartBean.cadastrarEndereco}"
+					icon="fa fa-fw fa-map-marker" style="width: 100%"
+					oncomplete="PF('dialogAdicionarEndereco').hide();"
+					update=":formPrincipal,:formMenu:grow" />
 
 			</p:dialog>
 		</h:form>

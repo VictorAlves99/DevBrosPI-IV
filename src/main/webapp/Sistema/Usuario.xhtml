@@ -47,36 +47,19 @@
 											value="#{usuarioBean.textoPesquisa}"
 											placeholder="Pesquisar por Nome do Usuário..." />
 
-										<p:outputPanel rendered="#{empresaBean.empresaTipo == 3}">
-											<p:column>
-												<p:commandButton styleClass="primary-btn"
-													style="max-width:130px" icon="ui-icon-search"
-													actionListener="#{usuarioBean.pesquisarADM}"
-													value="Pesquisar" update="tableUsuario" />
+										<p:column>
+											<p:commandButton styleClass="primary-btn"
+												style="max-width:130px" icon="ui-icon-search"
+												actionListener="#{usuarioBean.pesquisar}"
+												value="Pesquisar" update="tableUsuario" />
 
-												<p:commandButton styleClass="success-btn"
-													icon="fa fa-fw fa-plus" style="max-width:150px"
-													value="Novo Usuário"
-													actionListener="#{usuarioBean.incluir()}"
-													update="formPrincipal:panelPrincipal" />
+											<p:commandButton styleClass="success-btn"
+												icon="fa fa-fw fa-plus" style="max-width:150px"
+												value="Novo Usuário"
+												actionListener="#{usuarioBean.incluir()}"
+												update="formPrincipal:panelPrincipal" />
 
-											</p:column>
-										</p:outputPanel>
-
-										<p:outputPanel rendered="#{empresaBean.empresaTipo != 3}">
-											<p:column>
-												<p:commandButton styleClass="primary-btn"
-													style="max-width:130px" icon="ui-icon-search"
-													actionListener="#{usuarioBean.pesquisar}" value="Pesquisar"
-													update="tableUsuario" />
-
-												<p:commandButton styleClass="success-btn"
-													icon="fa fa-fw fa-plus" style="max-width:150px"
-													value="Novo Usuário"
-													actionListener="#{usuarioBean.incluir()}"
-													update="formPrincipal:panelPrincipal" />
-											</p:column>
-										</p:outputPanel>
+										</p:column>
 
 									</p:panelGrid>
 
