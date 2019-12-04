@@ -1,5 +1,7 @@
 package br.com.sistema.rotinas.produtos;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
@@ -44,14 +46,55 @@ public class ProdutosBean implements Serializable {
 	
 	private boolean produtoSalvo = false;
 	private final boolean usuarioAdm = ParametrosSistema.getUsuarioLogado().getTipoUsuario().ordinal() == 1;
-	
-	private List<Produto> produtos;
+
+	private List<Produto> produtosAAdicionar = new ArrayList<>();
+	private List<Produto> produtos = new ArrayList<>();
 	private List<TipoPlataformaProduto> plataformasEscolhidas;
 
 	public ProdutosBean() {
 		
 	}
 	
+	public void adicionarProdutos(){
+
+		try(BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\priscyla.poliveira\\Desktop\\DevBrosPI-IV\\src\\main\\webapp\\resources\\outros\\in.txt"))){
+			
+			String line = br.readLine();
+			while(line != null) {
+				String[] linha = line.split(",");
+				Produto produto = new Produto(linha[0],linha[1],linha[2],Double.parseDouble(linha[3]),Integer.parseInt(linha[4]),verificaEnum(linha[5]));
+				produtosAAdicionar.add(produto);
+				line = br.readLine();
+			}
+			
+			produtosAAdicionar.forEach(Produto::adicionarProduto);
+			
+			Mensagens.gerarMensagemGenerica("Produtos salvos com sucesso!");
+			
+		}catch(IOException e) {
+			Mensagens.gerarMensagemException(e);
+		}catch(Exception e) {
+			Mensagens.gerarMensagemException(e);
+		}
+	}
+	
+	private TipoPlataformaProduto verificaEnum(String string) {
+		if(string.equalsIgnoreCase("Playstation 4")||string.equalsIgnoreCase("PS4")) {
+			return TipoPlataformaProduto.PS4;
+		}else if(string.equalsIgnoreCase("Playstation 3")||string.equalsIgnoreCase("PS3")) {
+			return TipoPlataformaProduto.PS3;
+		}else if(string.equalsIgnoreCase("XBOX ONE")) {
+			return TipoPlataformaProduto.XBOXONE;
+		}else if(string.equalsIgnoreCase("XBOX 360")) {
+			return TipoPlataformaProduto.XBOX360;
+		}else if(string.equalsIgnoreCase("Switch")||string.equalsIgnoreCase("Nintendo Switch")) {
+			return TipoPlataformaProduto.SWITCH;
+		}else if(string.equalsIgnoreCase("Console")) {
+			return TipoPlataformaProduto.CONSOLE;
+		}
+		return TipoPlataformaProduto.CONSOLE;
+	}
+
 	public void subirArquivo(FileUploadEvent event) {
 		try {
 			if (this.objeto == null || this.objeto.getId() <= 0)

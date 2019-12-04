@@ -22,7 +22,7 @@
 
 								<p:outputPanel rendered="#{produtoBean.objeto == null}">
 
-									<p:panelGrid columns="3" layout="grid"
+									<p:panelGrid columns="2" layout="grid"
 										styleClass="ui-panelgrid-blank form-group">
 
 										<p:inputText styleClass="form-control" id="textoPesquisa"
@@ -41,6 +41,11 @@
 												rendered="#{produtoBean.usuarioAdm}" icon="fa fa-fw fa-plus"
 												update="formPrincipal:panelPrincipal" />
 
+											<p:commandButton styleClass="primary-btn"
+												style="max-width:180px" value="Adicionar do TXT"
+												actionListener="#{produtoBean.adicionarProdutos}"
+												rendered="#{produtoBean.usuarioAdm}" icon="fa fa-fw fa-list"
+												update="formPrincipal:panelPrincipal, formMenu:grow" />
 										</p:column>
 
 									</p:panelGrid>

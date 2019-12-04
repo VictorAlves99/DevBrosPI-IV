@@ -19,6 +19,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import br.com.sistema.enuns.TipoPlataformaProduto;
+import br.com.sistema.jsf.Mensagens;
 
 @Entity
 public class Produto implements Serializable {
@@ -69,6 +70,17 @@ public class Produto implements Serializable {
 	
 	public Produto(String nome) {
 		this.nome = nome;
+	}
+
+	public Produto(String nome, String descricao, String codigoDeBarras, double preco, int quantidade,
+			TipoPlataformaProduto plataforma) {
+		super();
+		this.nome = nome;
+		this.descricao = descricao;
+		this.codigoDeBarras = codigoDeBarras;
+		this.preco = preco;
+		this.quantidade = quantidade;
+		this.plataforma = plataforma;
 	}
 
 	public TipoPlataformaProduto getPlataforma() {
@@ -143,6 +155,14 @@ public class Produto implements Serializable {
 		this.quantidade = quantidade;
 	}
 
+	public void adicionarProduto() {
+		try {
+			new ProdutosDAO().save(this);
+		} catch (Exception e) {
+			Mensagens.gerarMensagemException(e);
+		}
+	}
+	
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
