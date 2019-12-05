@@ -19,6 +19,7 @@
 		href="https://uploaddeimagens.com.br/imagens/favicon-ico-34aef661-1a6f-49dd-a49c-8f45515d53ae" />
 	<title>Login</title>
 	<h:outputScript name="js/layout.js" library="avalon-layout" />
+	<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet"/>
 	<style>
 .textoDirecional {
 	color: #0000b3;
@@ -39,31 +40,30 @@
 			<div class="ui-g">
 				<div class="ui-g-12 ui-sm-6 ui-md-6"
 					style="width: 45%; text-align: left;">
-					<p:graphicImage name="images/login/icon-login.svg"
-						library="avalon-layout" />
+					<i class="fa fa-fw fa-user" style="font-size: 2.5em" id="user"/>
+					<p:graphicImage library="avalon-layout" />
 				</div>
-				<div class="ui-g-12 ui-sm-6 ui-md-6"
-					style="width: 55%; text-align: right;">
-					<h2 class="welcome-text">Bem vindo</h2>
-					<br /> <span class="guest-sign-in">Conecte-se ao Noobies</span>
+				<div>
+					<h2 class="welcome-text">Faça o login da sua conta</h2>
 				</div>
 
 				<h:form>
 					<p:growl id="grow" showDetail="false" />
-
 					<div class="ui-g-12" style="text-align: left;">
 						<h:panelGroup>
+						<i class="fa fa-fw fas fa-at"/>
 							<label class="login-label">E-mail</label>
 							<div class="login-input">
-								<p:inputText placeholder="E-mail" value="#{loginBean.email}" />
+								<p:inputText placeholder="E-mail" value="#{loginBean.email}" style="font-family: 'Lato', sans-serif;"/>
 							</div>
 						</h:panelGroup>
 					</div>
 					<div class="ui-g-12" style="text-align: left;">
 						<h:panelGroup>
+							<i class="fa fa-fw fas fa-unlock-alt"/>
 							<label class="login-label">Senha</label>
 							<div class="login-input">
-								<p:password placeholder="Senha" value="#{loginBean.senha}" />
+								<p:password placeholder="Senha" value="#{loginBean.senha}" style="font-family: 'Lato', sans-serif;"/>
 							</div>
 						</h:panelGroup>
 
@@ -73,17 +73,13 @@
 
 							<p:commandButton actionListener="#{loginBean.logar}"
 								value="Login" icon="fa fa-fw fa-sign-in" ajax="false"
-								update="grow" />
+								update="grow" style="background-color:#003689;" />
 						</div>
 					</div>
 					<div>
-						<div class="ui-g-12 ui-sm-6 ui-md-6">
-							<a href="RedefinirASenha.htm" class="textoDirecional">Esqueceu
-								a Senha?</a>
-						</div>
-						<div class="ui-g-12 ui-sm-6 ui-md-6">
-							<a href="CadastroCliente.htm" class="textoDirecional">Cadastre-se
-								agora!</a>
+						<div class="ui-g-12  ui-md-6" id="cadastro">
+							<i class="fa fa-fw fa-user-plus"/>
+							<a href="CadastroCliente.htm" class="textoDirecional">Cadastre-se agora!</a>
 						</div>
 					</div>
 				</h:form>
@@ -93,7 +89,8 @@
 		</div>
 	</div>
 
-	<h:outputStylesheet name="login.css" library="css" />
+	<h:outputStylesheet name="login-style.css" library="css" />
+	<h:outputStylesheet name="input-group.css" library="css" />
 </h:body>
 
 </html>

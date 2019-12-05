@@ -70,7 +70,7 @@ public class CarrinhoBean implements Serializable {
 	private CarrinhoItem carrinhoItem;
 	private String cep;
 
-	private List<CarrinhoItem> itens;
+	private List<CarrinhoItem> itens = new ArrayList<>();
 
 	private String logradouro;
 
