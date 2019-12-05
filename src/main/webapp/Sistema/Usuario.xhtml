@@ -169,14 +169,6 @@
 										<p:password id="confirmacaoSenha"
 											value="#{usuarioBean.objeto.confirmacaoSenha}" />
 
-										<p:outputLabel value="Endereços" for="endereco" />
-
-										<p:commandButton styleClass="success-btn"
-											value="Adicionar Endereço"
-											update=":formPrincipal,:formMenu:grow"
-											icon="fa fa-fw fa-map-marker" id="endereco"
-											oncomplete="PF('dialogAdicionarEndereco').show();" />
-
 										<p:commandButton styleClass="btn btn-primary" value="Salvar"
 											actionListener="#{usuarioBean.salvar}"
 											icon="fa fa-fw fa-check"
@@ -191,26 +183,6 @@
 								</p:outputPanel>
 							</p:outputPanel>
 						</p:panel>
-						<p:dialog id="dialogAdicionarEndereco"
-							widgetVar="dialogAdicionarEndereco" showEffect="clip"
-							hideEffect="clip" resizable="false" modal="true"
-							responsive="true" height="120" width="600" closeOnEscape="true">
-
-							<p:outputLabel value="Escreva aqui seu endereço completo:" />
-							<p:inputText value="#{usuarioBean.endereco}" />
-
-							<br />
-							<p:separator />
-							<br />
-
-							<p:commandButton styleClass="success-btn"
-								value="Adicionar Endereço"
-								actionListener="#{usuarioBean.cadastrarEndereco}"
-								icon="fa fa-fw fa-map-marker"
-								oncomplete="PF('dialogAdicionarEndereco').hide();"
-								update="formPrincipal:panelPrincipal,:formMenu:grow" />
-
-						</p:dialog>
 					</div>
 				</div>
 			</div>

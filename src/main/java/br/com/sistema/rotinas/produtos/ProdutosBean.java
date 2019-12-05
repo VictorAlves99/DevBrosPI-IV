@@ -40,6 +40,7 @@ public class ProdutosBean implements Serializable {
 	private String textoPesquisa;
 	private String pergunta;
 	private String resposta;
+	private String caminho;
 	
 	private List<ImagemProduto> imagens;
 	private ImagemProduto imagemSelecionada;
@@ -57,7 +58,7 @@ public class ProdutosBean implements Serializable {
 	
 	public void adicionarProdutos(){
 
-		try(BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\priscyla.poliveira\\Desktop\\DevBrosPI-IV\\src\\main\\webapp\\resources\\outros\\in.txt"))){
+		try(BufferedReader br = new BufferedReader(new FileReader(caminho))){
 			
 			String line = br.readLine();
 			while(line != null) {
@@ -350,6 +351,14 @@ public class ProdutosBean implements Serializable {
 
 	public boolean isUsuarioAdm() {
 		return usuarioAdm;
+	}
+
+	public String getCaminho() {
+		return caminho;
+	}
+
+	public void setCaminho(String caminho) {
+		this.caminho = caminho;
 	}
 	
 }

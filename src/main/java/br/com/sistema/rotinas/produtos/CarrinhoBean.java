@@ -168,6 +168,9 @@ public class CarrinhoBean implements Serializable {
 			if(formaDePagamento == TipoFormaPagamento.NaoDefinida) 
 				throw new MensagemException(Mensagens.getMensagem("Selecione uma forma de pagamento!"));
 			
+			if(carrinho.getItens().size() <= 0) 
+				throw new MensagemException(Mensagens.getMensagem("Não foi possível finalizar a compra. Carrinho não contém itens!"));
+				
 			usuarioEnderecoEscolhido = new UsuarioDAO().getEnderecoPorString(enderecoEscolhido, usuario);
 
 			venda.setPrecoTotal(this.getPrecoTotal());
@@ -189,7 +192,7 @@ public class CarrinhoBean implements Serializable {
 			}
 
 			List<CarrinhoItem> lista = new ProdutosDAO().getItensDoCarrinho(carrinho);
-
+			
 			for (CarrinhoItem c : lista) {
 				c = new ProdutosDAO().getCarrinhoItem(c);
 				Produto p = new ProdutosDAO().load(c.getProduto().getId());
@@ -326,8 +329,15 @@ public class CarrinhoBean implements Serializable {
 			String precoCents = Caracter.getRandomInt(2);
 			String preco = precoDols1 + precoDols2 + "." + precoCents;
 			
-			enderecoCompleto = buscarCep(this.cep);
-
+			if(this.cep != null) {
+				if(this.numero == null)
+					this.numero = "sem nº";
+				
+				enderecoCompleto = buscarCep(this.cep);
+			}else {
+				throw new MensagemException(Mensagens.getMensagem("Digite o CEP corretamente"));
+			}
+			
 			endereco.setPrecoFrete(Double.parseDouble(preco));
 			endereco.setUsuario(this.usuario);
 			endereco.setEndereco(enderecoCompleto);
@@ -352,11 +362,15 @@ public class CarrinhoBean implements Serializable {
 		}
 	}
 	
-	public void buscarCEP() {
-		
-		enderecoCompleto = buscarCep(this.cep);
-		Mensagens.gerarMensagemGenerica(enderecoCompleto);
-		
+	public void buscarCEP() throws MensagemException {
+		if(this.cep != null) {
+			if(this.numero == null)
+				this.numero = "sem nº";
+				
+			enderecoCompleto = buscarCep(this.cep);
+		}else {
+			throw new MensagemException(Mensagens.getMensagem("Digite o CEP corretamente."));
+		}
 	}
 	
 	public String buscarCep(String cep) {

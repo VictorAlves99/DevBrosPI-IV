@@ -62,7 +62,8 @@
 			<div class="ui-fluid">
 				<div class="ui-g">
 					<div class="ui-g-12" style="padding: 0; margin: 0;">
-						<p:panel styleClass="ui-panelgrid-blank form-group">
+						<p:panel styleClass="ui-panelgrid-blank form-group"
+							style="height: 900px">
 							<p:panelGrid columns="2" layout="grid"
 								style="background-color: lightblue;border-bottom: 5px solid #BCBCBC;"
 								styleClass="ui-panelgrid-blank form-group"
@@ -94,7 +95,7 @@
 									</p:menubar>
 								</p:panelGrid>
 							</p:panelGrid>
-							<p:outputPanel style="padding:10px" id="panelItens">
+							<p:outputPanel style="padding:10px; padding-top: 20px; padding-bottom: 20px" id="panelItens">
 								<p:dataTable id="tablePesquisa" var="i"
 									paginatorPosition="bottom" value="#{cartBean.itens}"
 									reflow="true" rowKey="#{i.id}" scrollable="true"
@@ -158,7 +159,10 @@
 
 							<p:separator />
 
+							<br/>
+
 							<p:panelGrid columns="2" layout="grid"
+								style="padding-left: 20px;padding-right: 20px;"
 								styleClass="ui-panelgrid-blank form-group">
 
 								<p:outputPanel>
@@ -182,8 +186,9 @@
 							</p:panelGrid>
 
 							<p:panelGrid columns="3" layout="grid"
+								style="padding-left: 20px;padding-right: 20px;"
 								styleClass="ui-panelgrid-blank form-group"
-								columnClasses="ui-grid-col-8,ui-grid-col-2,ui-grid-col-2">
+								columnClasses="ui-grid-col-6,ui-grid-col-3,ui-grid-col-3">
 
 								<p:outputPanel>
 									<p:outputLabel value="Endereço" />
@@ -197,27 +202,29 @@
 								</p:outputPanel>
 
 								<p:commandButton styleClass="success-btn"
-									value="Adicionar Endereço" style="margin-top: 22px;"
+									value="Adicionar Endereço" style="margin-top: 18px;font-size: 18px"
 									update=":formPrincipal,:formMenu:grow"
 									icon="fa fa-fw fa-map-marker" id="endereco"
 									oncomplete="PF('dialogAdicionarEndereco').show();" />
 
 								<p:outputPanel id="panelFrete"
-									style="font-size: 20px; font-weight: bold; border: 1px solid grey; border-radius: 10px; padding: 10px; margin-top: 8px;display: flex; justify-content: center">
+									style="font-size: 19px; font-weight: bold; border: 1px solid grey; color: blue; border-radius: 10px; padding: 10px; margin-top: 10px;display: flex; justify-content: center">
 									<p:outputLabel for="precoFrete" value="Preço Frete : R$ " />
 									<p:outputLabel id="precoFrete" value="#{cartBean.precoFrete}"
 										converter="moneyConverter" />
 								</p:outputPanel>
 							</p:panelGrid>
 
-							<br />
+							<br/>
 
 							<p:separator />
 
-							<br />
+							<br/>
+							
 							<p:panelGrid columns="3" layout="grid"
+								style="padding-left: 20px;padding-right: 20px;"
 								styleClass="ui-panelgrid-blank form-group"
-								columnClasses="ui-grid-col-2,ui-grid-col-6,ui-grid-col-4">
+								columnClasses="ui-grid-col-3,ui-grid-col-5,ui-grid-col-4">
 								<p:outputPanel
 									style="font-size: 20px; font-weight: bold; color: red; border: 1px solid grey; border-radius: 10px; padding: 10px; display: flex; justify-content: center">
 									<p:outputLabel value="Preço Total : R$ " />
@@ -226,7 +233,8 @@
 								</p:outputPanel>
 								<p:outputPanel />
 								<p:commandButton styleClass="btn-primary"
-									value="Finalizar Compra" icon="fa fa-fw fa-check"
+									style="font-size: 18px" value="Finalizar Compra"
+									icon="fa fa-fw fa-check"
 									actionListener="#{cartBean.encerrarCompra()}"
 									oncomplete="handleCompleteAbrirSugestao(xhr, status, args)"
 									update=":formPrincipal,:formMenu:grow" />

@@ -12,7 +12,7 @@
 			<div class="ui-fluid">
 				<div class="ui-g">
 					<div class="ui-g-12">
-						
+
 						<p:panel>
 							<f:facet name="header">
 								<i class="fa fa-fw fa-list-alt" />
@@ -43,7 +43,7 @@
 
 											<p:commandButton styleClass="primary-btn"
 												style="max-width:180px" value="Adicionar do TXT"
-												actionListener="#{produtoBean.adicionarProdutos}"
+												oncomplete="PF('dialogCaminho').show();"
 												rendered="#{produtoBean.usuarioAdm}" icon="fa fa-fw fa-list"
 												update="formPrincipal:panelPrincipal, formMenu:grow" />
 										</p:column>
@@ -140,7 +140,7 @@
 
 										<p:inputText id="quantidade" type="number"
 											value="#{produtoBean.objeto.quantidade}" />
-										
+
 										<p:outputLabel value="Plataforma" for="plataforma" />
 
 										<p:selectOneMenu id="plataforma"
@@ -215,6 +215,28 @@
 					</div>
 				</div>
 			</div>
+
+			<p:dialog id="dialogCaminho" widgetVar="dialogCaminho"
+				header="Caminho do TXT" showEffect="clip" hideEffect="clip"
+				resizable="false" modal="true" responsive="true" height="100"
+				width="530" closeOnEscape="true">
+
+				<p:outputPanel style="font-size: 15px">
+					<p:outputLabel style="width:100%" value="Digite o caminho do arquivo: "></p:outputLabel>
+					<p:inputText style="width:100%" value="#{produtoBean.caminho}"></p:inputText>
+				</p:outputPanel>
+				<br />
+				<p:outputPanel>
+					<p:commandButton styleClass="primary-btn" style="width:100%"
+						value="Adicionar"
+						actionListener="#{produtoBean.adicionarProdutos}"
+						icon="fa fa-fw fa-plus"
+						update="formPrincipal:panelPrincipal, formMenu:grow"
+						oncomplete="PF('dialogCaminho').hide();" />
+				</p:outputPanel>
+
+
+			</p:dialog>
 		</h:form>
 	</ui:define>
 </ui:composition>

@@ -29,27 +29,34 @@
 	color: #0000b3;
 }
 </style>
+	<script>
+		function handleCompleteAbrirSugestao(xhr, status, args) {
+			if (args.showDialog) {
+				PF('dialogAdicionarEndereco').show();
+			}
+		}
+	</script>
 </h:head>
 
 <h:body styleClass="login-body">
-	<div class="login-image">
-		<a href="Sistema/Dashboard.htm"><p:graphicImage
-				name="images/logo.png" library="avalon-layout" /></a>
-	</div>
-	<div class="card login-panel ui-fluid" style="padding-top: 0px">
-		<div class="login-panel-content">
-			<div class="ui-g">
-				<div class="ui-g-12 ui-sm-6 ui-md-6"
-					style="width: 100%; text-align: center; ">
-					<h2 class="welcome-text">
-						<b>Cadastro de Cliente</b>
-					</h2>
-				</div>
 
-				<h:form>
-					<p:growl id="grow" showDetail="false" />
+	<h:form id="formPrincipal">
+		<div class="login-image">
+			<a href="Sistema/Dashboard.htm"><p:graphicImage
+					name="images/logo.png" library="avalon-layout" /></a>
+		</div>
+		<div class="card login-panel ui-fluid"
+			style="height: 850px; padding-top: 0px">
+			<div class="login-panel-content">
+				<div class="ui-g">
+					<div class="ui-g-12 ui-sm-6 ui-md-6"
+						style="width: 100%; text-align: center;">
+						<h2 class="welcome-text">
+							<b>Cadastro de Cliente</b>
+						</h2>
+					</div>
 
-					<div class="ui-g-12" style="text-align: left; margin-top ">
+					<div class="ui-g-12" style="text-align: left;">
 						<h:panelGroup>
 							<label class="login-label" style="margin-left: 1px">Nome</label>
 							<div class="login-input">
@@ -68,7 +75,7 @@
 								<p:inputMask id="cpf" value="#{cadastroClienteBean.objeto.cpf}"
 									mask="999.999.999-99" style="width:325px" />
 							</div>
-							
+
 							<br />
 							<label class="login-label" style="margin-left: 1px">Celular</label>
 							<div class="login-input">
@@ -77,16 +84,19 @@
 									mask="(99) 9999-9999?9" style="width:325px" />
 							</div>
 							<br />
-							<label class="login-label" style="margin-left: 1px">Data de nascimento</label>
+							<label class="login-label" style="margin-left: 1px">Data
+								de nascimento</label>
 							<div class="login-input">
-								<p:calendar value="#{cadastroClienteBean.objeto.dataDeNascimento}"
+								<p:calendar
+									value="#{cadastroClienteBean.objeto.dataDeNascimento}"
 									locale="pt" pattern="dd/MM/yyyy" />
 							</div>
 							<br />
 							<label class="login-label" style="margin-left: 1px">Senha</label>
 							<div class="login-input">
 								<p:password id="senha"
-									value="#{cadastroClienteBean.senhaDescriptografada}" style="width:325px" />
+									value="#{cadastroClienteBean.senhaDescriptografada}"
+									style="width:325px" />
 							</div>
 							<br />
 							<label class="login-label" style="margin-left: 1px">Confirmar
@@ -97,30 +107,102 @@
 									style="width:325px" />
 							</div>
 							<br />
-							<label class="login-label" style="margin-left: 1px">Endereço</label>
-							<div class="login-input">
-								<p:inputText id="endereco"
-									value="#{cadastroClienteBean.endereco}"
-									style="width:325px" />
-							</div>
-							<br />
 						</h:panelGroup>
 					</div>
 					<div class="finishRed">
 						<p:commandButton
 							actionListener="#{cadastroClienteBean.cadastrar()}"
-							value="Confirmar" icon="fa fa-fw fa-user" ajax="false"
-							update=":grow" />
+							oncomplete="handleCompleteAbrirSugestao(xhr, status, args)"
+							value="Confirmar" icon="fa fa-fw fa-user"
+							update=":formPrincipal,:formPrincipal:dialogAdicionarEndereco,:formMenu:grow" />
 					</div>
 					<div class="ui-g-12 ui-sm-12 ui-md-12">
 						<a href="Login.htm" class="textoDirecional">Voltar</a>
 					</div>
-				</h:form>
-
-
+				</div>
 			</div>
 		</div>
-	</div>
+
+		<p:dialog id="dialogAdicionarEndereco" header="Adicionar Endereço"
+			widgetVar="dialogAdicionarEndereco" showEffect="clip"
+			hideEffect="clip" resizable="false" modal="true" responsive="true"
+			height="450" width="700" closeOnEscape="true">
+
+			<p:panelGrid columns="2" layout="grid"
+				styleClass="ui-panelgrid-blank form-group"
+				columnClasses="ui-grid-col-4,ui-grid-col-8">
+				<p:outputLabel value="Digite seu CEP:" />
+				<p:inputMask id="cep" style="width: 100%"
+					value="#{cadastroClienteBean.cep}" mask="99999-999" />
+
+				<p:outputLabel value="Digite seu Número:" />
+				<p:inputText style="width: 100%"
+					value="#{cadastroClienteBean.numero}" />
+
+			</p:panelGrid>
+
+			<p:panelGrid columns="1" layout="grid"
+				styleClass="ui-panelgrid-blank form-group">
+
+				<p:commandButton styleClass="primary-btn" value="Buscar Endereço"
+					actionListener="#{cadastroClienteBean.buscarCEP}"
+					icon="ui-icon-search" style="width: 100%"
+					oncomplete="PF('dialogAdicionarEndereco').show();"
+					update=":formPrincipal:dialogAdicionarEndereco,:formMenu:grow" />
+
+			</p:panelGrid>
+
+			<p:separator />
+
+			<p:panelGrid columns="1" layout="grid"
+				styleClass="ui-panelgrid-blank form-group">
+				<p:outputPanel style="font-size: 17px; text-align: center">
+					<p:outputLabel value="Informações do Endereço" />
+				</p:outputPanel>
+			</p:panelGrid>
+
+			<p:separator />
+
+			<p:panelGrid columns="2" layout="grid"
+				styleClass="ui-panelgrid-blank form-group"
+				columnClasses="ui-grid-col-4,ui-grid-col-8">
+				<p:outputLabel value="Logradouro:" />
+				<p:inputText style="width: 100%"
+					value="#{cadastroClienteBean.logradouro}" />
+
+				<p:outputLabel value="Bairro:" />
+				<p:inputText style="width: 100%"
+					value="#{cadastroClienteBean.bairro}" />
+
+				<p:outputLabel value="Cidade:" />
+				<p:inputText style="width: 100%"
+					value="#{cadastroClienteBean.cidade}" />
+
+				<p:outputLabel value="UF:" />
+				<p:inputText style="width: 100%" value="#{cadastroClienteBean.uf}" />
+
+				<p:outputLabel value="Endereço Completo:" />
+				<p:inputText style="width: 100%"
+					value="#{cadastroClienteBean.enderecoCompleto}" />
+			</p:panelGrid>
+
+			<p:separator />
+
+			<p:commandButton styleClass="success-btn" value="Adicionar Endereço"
+				actionListener="#{cadastroClienteBean.cadastrarEndereco}"
+				icon="fa fa-fw fa-map-marker" style="width: 100%"
+				oncomplete="PF('dialogAdicionarEndereco').hide();"
+				update=":formPrincipal,:formMenu:grow" />
+
+		</p:dialog>
+
+	</h:form>
+
+	<h:form id="formMenu">
+
+		<p:growl id="grow" widgetVar="grow" showDetail="false" life="300000" />
+
+	</h:form>
 
 	<h:outputStylesheet name="login.css" library="css" />
 </h:body>
