@@ -18,7 +18,7 @@
 		<version.mysql.connector>8.0.17</version.mysql.connector>
 		<version.postgresql.connector>42.1.4</version.postgresql.connector>
 		<version.junit>4.12</version.junit>
-		<version.javax.faces>2.2</version.javax.faces>
+		<version.javax.faces>2.2.6</version.javax.faces>
 		<version.javax.servlet>2.5</version.javax.servlet>
 		<version.javax.el>2.2</version.javax.el>
 		<version.primefaces>6.1</version.primefaces>
